@@ -1,0 +1,45 @@
+:root {
+    --salmon: #DFAEA4;
+    --prietito: #ce968c;
+    --morenito: #be7d74;
+    --quemado: #6d463e;
+    --piel: #efc7bc;
+    --werito: #ffdfd4;
+    --gris: #efefef;
+}
+
+body {
+    background-color: var(--gris);
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: linear-gradient(to top, var(--prietito) 0%, var(--piel) 100%);
+    width: 45%;
+    /*height: 30rem;*/
+    min-width: 22rem;
+    margin: 3rem auto;
+    
+    gap: 0.8rem;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.2rem 1rem;
+}
+
+.campo,
+.btn {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0;
+    gap: 0.6rem;
+}
+
+label {
+    font-weight: bold;
+}

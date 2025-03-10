@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar cita</title>
+    <link rel="stylesheet" href="styles/banner.css">
+    <link rel="stylesheet" href="styles/agendar_cita.css">
+    <link rel="stylesheet" href="styles/componentes.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <section class="marca">Uriangato Style</section>
+
+        <!-- Botón Hamburguesa -->
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="checkbtn">
+            <i class="fas fa-bars"></i>
+        </label>
+
+        <!-- Menú -->
+        <ul class="menu">
+            <li><a href="" class="active">Servicios</a></li>
+            <li><a href="">Galería</a></li>
+            <li><a href="">Blog</a></li>
+            <li><a href="">Sucursales</a></li>
+            <li><a href="">Nosotros</a></li>
+        </ul>
+
+        <!-- Íconos -->
+        <div class="iconos">
+            <a href="">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-linecap="round" stroke-linejoin="round" width="40" height="40" stroke-width="1">
+                    <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6">
+                    </path>
+                    <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
+                </svg>
+            </a>
+            <a href="">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-linecap="round" stroke-linejoin="round" width="40" height="40" stroke-width="1">
+                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                    <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                </svg>
+            </a>
+        </div>
+    </nav>
+    <header>
+        <h2>Agendar cita</h2>
+    </header>
+    <main>
+        <form action="">
+            <div>
+                <div>
+                    <label>Nombre</label>
+                    <input type="text" class="input-field" value="Juan" disabled>
+                </div>
+                <div>
+                    <label>Apellido</label>
+                    <input type="text" class="input-field" value="Peres" disabled>
+                </div>
+                <div>
+                    <label>Usuario</label>
+                    <input type="text" class="input-field" value="IngPeres" disabled>
+                </div>
+                <div>
+                    <label>Correo electrónico</label>
+                    <input type="email" class="input-field">
+                </div>
+                <div>
+                    <label>Teléfono</label>
+                    <input type="tel" class="input-field">
+                </div>
+                <div>
+                    <label>Domicilio (Opcional)</label>
+                    <input type="text" class="input-field">
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <label>Fecha</label>
+                    <input
+                        type="date"
+                        id="start"
+                        name="trip-start"
+                        value="2025-03-08"
+                        min="2025-03-08"
+                        max="2025-12-31">
+                </div>
+        
+                <div>
+                    <label>Hora</label>
+                    <select>
+                        <option>16:00</option>
+                        <option>17:00</option>
+                        <option>18:00</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Servicio</label>
+                    <select>
+                        <option>Desperuanizador</option>
+                        <option>Otro servicio</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Costo</label>
+                    <input type="text" class="input-field" value="$ 3,000" disabled>
+                </div>
+            </div>
+        </form>
+        <div class="btn">
+            <button type="submit">Agendar</button>
+        </div>
+    </main>
+    <footer>
+        <div class="btn">
+            <button type="button">Ver servicios</button>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,60 @@
+input {
+    background-color: var(--gris);
+    border: 1px solid #b0b0b0;
+    height: 1.5rem;
+    width: 18rem;
+    padding: 0.3rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+}
+
+input:focus {
+    background-color: white;
+    border-color: var(--morenito);
+    box-shadow: 0px 0px 5px var(--morenito);
+}
+
+.btn {
+    align-items: center;
+}
+
+button {
+    background-color: var(--morenito);
+    border: none;
+    font-size: larger;
+    color: white;
+    height: 3rem;
+    width: 10rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+button:hover {
+    background-color: var(--quemado);
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.otros {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.6rem;
+}
+
+.otros a{
+    color: black;
+    text-decoration: none;
+}
+
+.otros a:hover {
+    color: white;
+    text-decoration: solid;
+    transition: color 0.3s ease-in-out;
+}

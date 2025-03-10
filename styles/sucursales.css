@@ -1,0 +1,48 @@
+:root 
+{
+    --salmon: #DFAEA4;
+    --prietito: #ce968c;
+    --morenito: #be7d74;
+    --quemado: #6d463e;
+    --piel: #efc7bc;
+    --werito: #ffdfd4;
+    --gris: #efefef;
+}
+h3
+{
+    color: var(--salmon);
+}
+main
+{
+    display: flex;
+    flex-direction: column;
+}
+main div
+{
+    display: flex;
+    flex-direction: row;
+    height: 500px;
+}
+.informacion
+{
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    height: 500px; 
+    width: 55%;
+}
+.informacion p
+{
+    margin-top: 5%;
+}
+iframe
+{
+    margin: 10px;
+}
+footer
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 20px;
+}
