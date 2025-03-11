@@ -1,0 +1,20 @@
+:root 
+{
+    --salmon: #DFAEA4;
+    --prietito: #ce968c;
+    --morenito: #be7d74;
+    --quemado: #6d463e;
+    --piel: #efc7bc;
+    --werito: #ffdfd4;
+    --gris: #efefef;
+}
+.Ver-todos
+{
+    color: var(--morenito);
+    text-align: right;
+    margin-bottom: 20px;
+}
+a 
+{
+    text-decoration: none;
+}

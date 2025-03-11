@@ -14,7 +14,7 @@
 </head>
 <body>
     <nav>
-        <section class="marca">Uriangato Style</section>
+        <a href="index.html"><section class="marca">Uriangato Style</section></a>
 
         <!-- Botón Hamburguesa -->
         <input type="checkbox" id="menu-toggle">
@@ -24,11 +24,11 @@
 
         <!-- Menú -->
         <ul class="menu">
-            <li><a href="" class="active">Servicios</a></li>
-            <li><a href="">Galería</a></li>
+            <li><a href="servicios.html" class="active">Servicios</a></li>
+            <li><a href="galeria_trabajos.html">Galería</a></li>
             <li><a href="">Blog</a></li>
-            <li><a href="">Sucursales</a></li>
-            <li><a href="">Nosotros</a></li>
+            <li><a href="sucursales.html">Sucursales</a></li>
+            <li><a href="nosotros.html">Nosotros</a></li>
         </ul>
 
         <!-- Íconos -->
@@ -53,72 +53,74 @@
     <header>
         <h2>Agendar cita</h2>
     </header>
-    <main>
-        <form action="">
-            <div>
+    <div id="container">
+        <main>
+            <form action="">
                 <div>
-                    <label>Nombre</label>
-                    <input type="text" class="input-field" value="Juan" disabled>
+                    <div>
+                        <label>Nombre</label>
+                        <input type="text" class="input-field" value="Juan" disabled>
+                    </div>
+                    <div>
+                        <label>Apellido</label>
+                        <input type="text" class="input-field" value="Peres" disabled>
+                    </div>
+                    <div>
+                        <label>Usuario</label>
+                        <input type="text" class="input-field" value="IngPeres" disabled>
+                    </div>
+                    <div>
+                        <label>Correo electrónico</label>
+                        <input type="email" class="input-field">
+                    </div>
+                    <div>
+                        <label>Teléfono</label>
+                        <input type="tel" class="input-field">
+                    </div>
+                    <div>
+                        <label>Domicilio (Opcional)</label>
+                        <input type="text" class="input-field">
+                    </div>
                 </div>
-                <div>
-                    <label>Apellido</label>
-                    <input type="text" class="input-field" value="Peres" disabled>
-                </div>
-                <div>
-                    <label>Usuario</label>
-                    <input type="text" class="input-field" value="IngPeres" disabled>
-                </div>
-                <div>
-                    <label>Correo electrónico</label>
-                    <input type="email" class="input-field">
-                </div>
-                <div>
-                    <label>Teléfono</label>
-                    <input type="tel" class="input-field">
-                </div>
-                <div>
-                    <label>Domicilio (Opcional)</label>
-                    <input type="text" class="input-field">
-                </div>
-            </div>
 
-            <div>
                 <div>
-                    <label>Fecha</label>
-                    <input
-                        type="date"
-                        id="start"
-                        name="trip-start"
-                        value="2025-03-08"
-                        min="2025-03-08"
-                        max="2025-12-31">
+                    <div>
+                        <label>Fecha</label>
+                        <input
+                            type="date"
+                            id="start"
+                            name="trip-start"
+                            value="2025-03-08"
+                            min="2025-03-08"
+                            max="2025-12-31">
+                    </div>
+            
+                    <div>
+                        <label>Hora</label>
+                        <select>
+                            <option>16:00</option>
+                            <option>17:00</option>
+                            <option>18:00</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Servicio</label>
+                        <select>
+                            <option>Desperuanizador</option>
+                            <option>Otro servicio</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Costo</label>
+                        <input type="text" class="input-field" value="$ 3,000" disabled>
+                    </div>
                 </div>
-        
-                <div>
-                    <label>Hora</label>
-                    <select>
-                        <option>16:00</option>
-                        <option>17:00</option>
-                        <option>18:00</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Servicio</label>
-                    <select>
-                        <option>Desperuanizador</option>
-                        <option>Otro servicio</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Costo</label>
-                    <input type="text" class="input-field" value="$ 3,000" disabled>
-                </div>
+            </form>
+            <div class="btn">
+                <button type="submit">Agendar</button>
             </div>
-        </form>
-        <div class="btn">
-            <button type="submit">Agendar</button>
-        </div>
-    </main>
+        </main>
+    </div>
     <footer>
         <div class="btn">
             <button type="button">Ver servicios</button>

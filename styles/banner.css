@@ -2,6 +2,7 @@
     --salmon: #DFAEA4;
     --prietito: #ce968c;
     --morenito: #be7d74;
+    --quemado: #6d463e;
     --piel: #efc7bc;
     --werito: #ffdfd4;
     --gris: #efefef;
@@ -85,8 +86,8 @@ nav {
         width: 100%;
         text-align: center;
         padding: 1rem 0;
+        
     }
-
     .menu li {
         padding: 1rem 0;
     }
@@ -96,10 +97,42 @@ nav {
         display: flex;
     }
 
+    nav 
+    {
+        width: 100%;
+        min-width: 320px;
+    }
+    header
+    {
+        width: 100vw; /* Ocupa todo el ancho del viewport */
+        max-width: 100%;
+        min-width: 340px;
+    }
     /* Mostrar el botón hamburguesa */
     .checkbtn {
         display: block;
     }
+    .btn-flotante 
+    {
+		font-size: 14px;
+		padding: 12px 20px;
+		bottom: 20px;
+		right: 20px;
+	}
+    .category-services button 
+    {
+        font-size: 10px;
+    }
+
+    .contenedor {
+        flex-direction: column; 
+    }
+
+    .contenedor img,
+    .contenedor .texto {
+        flex: 1 1 auto; 
+    }
+
 }
 
 .iconos {
@@ -130,6 +163,7 @@ header {
     background-image: url(../images/salon2.jpg);
     /*background-color: #dedede;*/
     height: 15rem;
+    width: 100%;
     background-position-y: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -145,4 +179,31 @@ header h2 {
     justify-content: center;
     font-size: 3.5em;
     /*text-shadow: 6px 5px 5px rgb(0, 0, 0, 0.5);*/
+}
+.btn-flotante 
+{
+	font-size: 16px; 
+	text-transform: uppercase; 
+	font-weight: bold; 
+	color: #ffffff; 
+	border-radius: 10px; 
+	letter-spacing: 2px; 
+	background-color: #BE7D74;
+	padding: 18px 30px; 
+	position: fixed;
+	bottom: 40px;
+	right: 40px;
+	transition: all 300ms ease 0ms;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	z-index: 99;
+}
+.btn-flotante:hover 
+{
+	background-color: var(--quemado); 
+	box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+	transform: translateY(-7px);
+}
+a 
+{
+    text-decoration: none;
 }

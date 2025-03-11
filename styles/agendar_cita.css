@@ -16,6 +16,12 @@ main
     background-image: linear-gradient(to top, var(--prietito) 0%, var(--piel) 100%);
     height: 32rem;
     margin: 20px;
+    width: 55%;
+}
+#container
+{
+    width: 100%;
+    justify-items: center;
 }
 
 .campo, .btn 

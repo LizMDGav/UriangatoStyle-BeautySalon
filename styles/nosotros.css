@@ -1,0 +1,58 @@
+:root 
+{
+    --salmon: #DFAEA4;
+    --prietito: #ce968c;
+    --morenito: #be7d74;
+    --quemado: #6d463e;
+    --piel: #efc7bc;
+    --werito: #ffdfd4;
+    --gris: #efefef;
+}
+
+main
+{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    
+}
+.contenedor 
+{
+    margin: 0 auto;
+    width: 67%;
+    background-color: white;
+    
+}
+.sombra 
+{
+    box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
+    background-color: var(--blanco);
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: white;
+}
+.filosofia
+{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1rem;
+}
+
+.infous p 
+{
+    text-align: justify;
+}
+
+.infous 
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 25px;
+}
+.infous h3
+{
+    color: var(--salmon);
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
