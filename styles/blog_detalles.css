@@ -28,6 +28,7 @@ main {
     font-size: xx-large;
     font-weight: 500;
     margin-bottom: 0.8rem;
+    text-align: center;
 }
 .contenedor h3{
     font-size: large;
