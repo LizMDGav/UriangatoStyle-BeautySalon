@@ -8,6 +8,10 @@
     --gris: #efefef;
 }
 
+*{
+    box-sizing: border-box;
+}
+
 h3 {
     color: var(--salmon);
 }

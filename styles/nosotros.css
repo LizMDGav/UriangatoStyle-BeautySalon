@@ -1,5 +1,4 @@
-:root 
-{
+:root {
     --salmon: #DFAEA4;
     --prietito: #ce968c;
     --morenito: #be7d74;
@@ -9,50 +8,61 @@
     --gris: #efefef;
 }
 
-main
-{
+*{
+    box-sizing: border-box;
+}
+
+main {
     margin-top: 40px;
     margin-bottom: 40px;
-    
+
 }
-.contenedor 
-{
+
+.contenedor {
     margin: 0 auto;
     width: 67%;
     background-color: white;
-    
+
 }
-.sombra 
-{
-    box-shadow: 0px 5px 15px 0px rgba(112,112,112,0.48);
+
+.sombra {
+    box-shadow: 0px 5px 15px 0px rgba(112, 112, 112, 0.48);
     background-color: var(--blanco);
     padding: 2rem;
     border-radius: 1rem;
     background-color: white;
 }
-.filosofia
-{
+
+.filosofia {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 1rem;
 }
 
-.infous p 
-{
+.infous p {
     text-align: justify;
 }
 
-.infous 
-{
+.infous {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 25px;
 }
-.infous h3
-{
+
+.infous h3 {
     color: var(--salmon);
     font-weight: bold;
     margin-bottom: 15px;
 }
 
+@media (max-width: 768px) {
+    .filosofia {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .contenedor{
+        width: 90%;
+    }
+}

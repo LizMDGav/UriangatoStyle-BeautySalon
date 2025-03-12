@@ -8,6 +8,11 @@
     --werito: #ffdfd4;
     --gris: #efefef;
 }
+
+*{
+    box-sizing: border-box;
+}
+
 body
 {
     box-sizing: border-box;
