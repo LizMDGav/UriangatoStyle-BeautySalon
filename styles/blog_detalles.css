@@ -12,10 +12,14 @@
 main {
     display: flex;
     flex-direction: column;
-    width: 95%;
+    /*width: 95%;*/
     margin-top: 30px;
     margin-left: 50px;
     margin-right: 50px;
+}
+.contenido {
+    display: flex;
+    flex-direction: row;
 }
 
 .contenedor {
@@ -23,6 +27,7 @@ main {
     flex-direction: column;
     margin: 40px;
     align-items: center;
+    width: 60%;
 }
 .contenedor h1 {
     font-size: xx-large;
@@ -36,6 +41,43 @@ main {
     margin-bottom: 1rem;
 }
 
+.articulos {
+    width: 40%;
+    height: auto;
+    background-color: floralwhite;
+    margin-bottom: 2rem;
+}
+.articulos h2 {
+    background-color: antiquewhite;
+    padding: 1rem;
+    text-align: center;
+    font-size: x-large;
+    font-weight: 500;
+}
+.articulos article {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.articulos h4 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+.articulos :nth-child(3) {
+    
+}
+.articulos a {
+    text-decoration: underline;
+    color: black;
+    font-size: 1rem;
+    transition: color 0.3s ease-in-out;
+}
+.articulos a:hover {
+    color: var(--morenito);
+}
+
 img {
     width: 10px;
     height: 10px;
@@ -45,7 +87,6 @@ img {
 .informacion{
     display: flex;
     flex-direction: column;
-    width: 80%;
     text-align: justify;
     align-items: center;
     margin-bottom: 1rem;
