@@ -38,3 +38,9 @@ main {
 label {
     font-weight: bold;
 }
+
+@media (max-width:768px){
+    main{
+        width: 60%;
+    }
+}

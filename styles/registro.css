@@ -25,7 +25,8 @@ main {
     /*height: 30rem;*/
     min-width: 22rem;
     margin: 3rem auto;
-    
+    padding-top: 2rem;
+    padding-bottom: 2rem;
     gap: 0.8rem;
 }
 
@@ -46,4 +47,11 @@ form {
 
 label {
     font-weight: bold;
+}
+
+
+@media (max-width:768px){
+    main{
+        width: 60%;
+    }
 }

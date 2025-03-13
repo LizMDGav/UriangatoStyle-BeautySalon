@@ -1,5 +1,4 @@
-:root 
-{
+:root {
     --salmon: #DFAEA4;
     --prietito: #ce968c;
     --morenito: #be7d74;
@@ -9,72 +8,87 @@
     --gris: #efefef;
 }
 
-*{
+* {
     box-sizing: border-box;
 }
 
-body
-{
+body {
     box-sizing: border-box;
 }
-main
-{
+
+main {
     margin-top: 30px;
     margin-left: 50px;
     margin-right: 50px;
 
 }
-h2
-{
+
+.sub-servicios {
     color: var(--salmon);
     font-size: 2em;
 }
-.category-services button 
-{
+
+.category-services {
+    overflow-x: auto;
+    white-space: nowrap;
+    
+    scrollbar-color: var(--salmon) transparent;
+    scrollbar-width: thin; 
+}
+
+.category-services::-webkit-scrollbar {
+    height: 8px;
+}
+
+.category-services::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.category-services::-webkit-scrollbar-thumb {
+    background-color: var(--salmon);
+    border-radius: 10px; 
+}
+
+
+.category-services button {
+    display: inline-block;
     color: black;
     border: 0;
     padding: 10px 24px;
-    cursor: pointer; 
-    float: left; 
+    cursor: pointer;
     font-weight: bold;
     font-size: 20px;
 }
-  
-.category-services button:not(:last-child) 
-{
-    border-right: none; 
+
+.category-services button:not(:last-child) {
+    border-right: none;
 }
-  
-.category-services:after 
-{
+
+.category-services:after {
     content: "";
     clear: both;
     display: table;
 }
-  
-.category-services button:hover 
-{
+
+.category-services button:hover {
     color: var(--morenito);
 }
 
-footer
-{
+footer {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     margin: 20px;
 }
 
-#grid-container 
-{
+#grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
     padding: 16px;
 }
 
-.item 
-{
+.item {
     border: 1px solid #ccc;
     padding: 16px;
     text-align: center;
@@ -83,52 +97,47 @@ footer
     align-items: center;
 }
 
-.item img 
-{
+.item img {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
     margin-bottom: 8px;
 }
 
-.item h3 
-{
+.item h3 {
     margin: 0 0 8px;
     color: var(--salmon);
 }
-.item h4 
-{
+
+.item h4 {
     margin: 0 0 8px;
     color: black;
 }
-.item span 
-{
-    display: inline-block; 
-    text-decoration: line-through; 
-    text-decoration-thickness: 2px; 
-    text-decoration-color: red; 
-    opacity: 0.7; 
+
+.item span {
+    display: inline-block;
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    text-decoration-color: red;
+    opacity: 0.7;
 }
 
-.item button 
-{
+.item button {
     padding: 8px 16px;
     background-color: var(--salmon);
     color: white;
     border: none;
     cursor: pointer;
-    margin-top: auto; /* Alinea el botón al final */
+    margin-top: auto;
+    /* Alinea el botón al final */
 }
 
-.item button:hover 
-{
+.item button:hover {
     background-color: var(--morenito);
 }
 
-@media (max-width: 600px) 
-{
-    .grid-container 
-    {
+@media (max-width: 600px) {
+    .grid-container {
         grid-template-columns: 1fr;
     }
 }
