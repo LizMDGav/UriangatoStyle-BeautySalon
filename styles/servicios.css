@@ -129,7 +129,6 @@ footer {
     border: none;
     cursor: pointer;
     margin-top: auto;
-    /* Alinea el botón al final */
 }
 
 .item button:hover {

@@ -19,7 +19,6 @@ body {
     background-color: var(--gris);
 }
 
-/* NAVBAR */
 nav {
     display: flex;
     align-items: center;
@@ -28,10 +27,9 @@ nav {
     padding: 0 1rem;
     justify-content: space-between;
     position: relative;
-    z-index: 1000;  /* Asegura que esté sobre todos los elementos */
+    z-index: 1000;  
 }
 
-/* Nombre de la Marca */
 .marca {
     border: white solid 1px;
     font-size: 1.8rem;
@@ -40,7 +38,6 @@ nav {
     margin-right: 2rem;
 }
 
-/* Menú */
 .menu {
     display: flex;
     list-style: none;
@@ -58,7 +55,7 @@ nav {
     color: var(--morenito);
 }
 
-/* BOTÓN HAMBURGUESA */
+
 #menu-toggle {
     display: none;
 }
@@ -75,7 +72,6 @@ nav {
     transition: color 0.3s ease-in-out;
 }
 
-/* RESPONSIVE DESIGN */
 @media (max-width: 820px) {
     .menu {
         display: none;
@@ -93,7 +89,6 @@ nav {
         padding: 1rem 0;
     }
 
-    /* Mostrar el menú cuando el checkbox está marcado */
     #menu-toggle:checked~.menu {
         display: flex;
     }
@@ -105,11 +100,10 @@ nav {
     }
     header
     {
-        width: 100vw; /* Ocupa todo el ancho del viewport */
+        width: 100vw;
         max-width: 100%;
         min-width: 340px;
     }
-    /* Mostrar el botón hamburguesa */
     .checkbtn {
         display: block;
     }
@@ -139,11 +133,8 @@ nav {
 .iconos {
     color: black;
     margin-left: auto;
-    /* Empuja los íconos hacia la derecha */
     display: flex;
-    /* Asegura que los íconos se alineen correctamente */
     gap: 1rem;
-    /* Agrega espacio entre los íconos */
     padding: 0.2rem 1rem;
 }
 
@@ -162,7 +153,6 @@ nav {
 
 header {
     background-image: url(../images/salon2.jpg);
-    /*background-color: #dedede;*/
     height: 15rem;
     width: 100%;
     background-position-y: center;
@@ -180,7 +170,6 @@ header h2 {
     justify-content: center;
     font-size: 3.5em;
     text-align: center;
-    /*text-shadow: 6px 5px 5px rgb(0, 0, 0, 0.5);*/
 }
 .btn-flotante 
 {

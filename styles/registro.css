@@ -22,7 +22,6 @@ main {
     align-items: center;
     background-image: linear-gradient(to top, var(--prietito) 0%, var(--piel) 100%);
     width: 45%;
-    /*height: 30rem;*/
     min-width: 22rem;
     margin: 3rem auto;
     padding-top: 2rem;
