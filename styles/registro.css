@@ -54,3 +54,12 @@ label {
         width: 60%;
     }
 }
+
+.error-message {
+    display: block;           
+    color: #d9534f;           
+    font-size: 12px;         
+    margin-top: 4px;          
+    font-weight: bold;        
+    width: 18rem;
+}

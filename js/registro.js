@@ -1,102 +1,132 @@
 document.addEventListener('DOMContentLoaded', function () {
     const formulario = document.getElementById('registroForm');
 
-    // Creamos un contenedor para los mensajes flotantes si no existe en el HTML
-    let msgContainer = document.createElement('div');
-    msgContainer.id = 'floatingMsg';
-    // Estilos para el mensaje flotante (puedes modificarlos en tu CSS)
-    msgContainer.style.position = 'fixed';
-    msgContainer.style.top = '20px';
-    msgContainer.style.left = '50%'; 
-    msgContainer.style.transform = 'translateX(-50%)'; 
-    msgContainer.style.textAlign = 'center'
-    msgContainer.style.padding = '10px 20px';
-    msgContainer.style.backgroundColor = 'rgba(255, 0, 0, 0.8)';
-    msgContainer.style.color = '#fff';
-    msgContainer.style.borderRadius = '4px';
-    msgContainer.style.fontSize = '14px';
-    msgContainer.style.display = 'none';
-    msgContainer.style.zIndex = '1000';
-    document.body.appendChild(msgContainer);
-
-    // Función para mostrar el mensaje flotante
-    function showError(message) {
-        msgContainer.textContent = message;
-        msgContainer.style.display = 'block';
-        // Oculta el mensaje después de 3 segundos
-        setTimeout(() => {
-            msgContainer.style.display = 'none';
-        }, 6000);
+    // Función para mostrar el mensaje de error en el <span> correspondiente
+    function showFieldError(field, message) {
+        const errorElem = field.parentNode.querySelector('.error-message');
+        if (errorElem) {
+            errorElem.textContent = message;
+        }
     }
+
+    // Función para borrar el mensaje de error del <span>
+    function clearFieldError(field) {
+        const errorElem = field.parentNode.querySelector('.error-message');
+        if (errorElem) {
+            errorElem.textContent = '';
+        }
+    }
+
+    // Agregar event listener a cada input para borrar su error al escribir
+    const inputs = formulario.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('input', function () {
+            clearFieldError(input);
+        });
+    });
 
     formulario.addEventListener('submit', function (event) {
         event.preventDefault();
 
-        // Recuperación de valores
-        const nombre = document.getElementById('nombre').value.trim();
-        const apellidos = document.getElementById('apellidos').value.trim();
-        const correo = document.getElementById('correo').value.trim();
-        const usuario = document.getElementById('usuario').value.trim();
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
+        // Recuperación de valores y elementos de cada campo
+        const nombreField = document.getElementById('nombre');
+        const apellidosField = document.getElementById('apellidos');
+        const correoField = document.getElementById('correo');
+        const usuarioField = document.getElementById('usuario');
+        const passwordField = document.getElementById('password');
+        const confirmPasswordField = document.getElementById('confirmPassword');
+
+        const nombre = nombreField.value.trim();
+        const apellidos = apellidosField.value.trim();
+        const correo = correoField.value.trim();
+        const usuario = usuarioField.value.trim();
+        const password = passwordField.value;
+        const confirmPassword = confirmPasswordField.value;
+
+        let error = false;
 
         // 1. Verificar que ningún campo esté vacío
-        if (!nombre || !apellidos || !correo || !usuario || !password || !confirmPassword) {
-            showError("Todos los campos son obligatorios.");
-            return;
+        if (!nombre) {
+            showFieldError(nombreField, "Este campo es obligatorio.");
+            error = true;
         }
+        if (!apellidos) {
+            showFieldError(apellidosField, "Este campo es obligatorio.");
+            error = true;
+        }
+        if (!correo) {
+            showFieldError(correoField, "Este campo es obligatorio.");
+            error = true;
+        }
+        if (!usuario) {
+            showFieldError(usuarioField, "Este campo es obligatorio.");
+            error = true;
+        }
+        if (!password) {
+            showFieldError(passwordField, "Este campo es obligatorio.");
+            error = true;
+        }
+        if (!confirmPassword) {
+            showFieldError(confirmPasswordField, "Este campo es obligatorio.");
+            error = true;
+        }
+        if (error) return;
 
         // 2. Validar 'Nombre' y 'Apellidos'
-        // Permitir solo letras (incluyendo acentos y ñ) y espacios, entre 2 y 64 caracteres
+        // Solo se permiten letras (incluyendo acentos y ñ) y espacios, entre 2 y 64 caracteres
         const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,64}$/;
         if (!nameRegex.test(nombre)) {
-            showError("El nombre debe tener entre 2 y 64 caracteres y no puede contener números ni caracteres especiales.");
-            return;
+            showFieldError(nombreField, "El nombre debe tener entre 2 y 64 caracteres y no puede contener números ni caracteres especiales.");
+            error = true;
         }
         if (!nameRegex.test(apellidos)) {
-            showError("Los apellidos deben tener entre 2 y 64 caracteres y no pueden contener números ni caracteres especiales.");
-            return;
+            showFieldError(apellidosField, "Los apellidos deben tener entre 2 y 64 caracteres y no pueden contener números ni caracteres especiales.");
+            error = true;
         }
 
         // 3. Validar 'Correo'
-        const [localPart] = correo.split('@');
-        if (localPart.length < 6) {
-            showError("La parte local del correo (antes del @) debe tener al menos 6 caracteres.");
-            return;
+        if (!correo.includes('@')) {
+            showFieldError(correoField, "El correo debe contener el símbolo '@'.");
+            error = true;
+        } else {
+            const localPart = correo.split('@')[0];
+            if (localPart.length < 6) {
+                showFieldError(correoField, "La parte local del correo (antes del @) debe tener al menos 6 caracteres.");
+                error = true;
+            }
         }
-
-        // Validación básica para correo: contiene @, extensión y permite números y puntos
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(correo)) {
-            showError("Ingresa un correo electrónico válido.");
-            return;
+            showFieldError(correoField, "Ingresa un correo electrónico válido.");
+            error = true;
         }
 
         // 4. Validar 'Usuario'
-        // Permite letras, números, puntos y guiones bajos, entre 8 y 32 caracteres
+        // Se permiten letras, números, puntos y guiones bajos, entre 8 y 32 caracteres
         const usuarioRegex = /^[A-Za-z0-9._]{8,32}$/;
         if (!usuarioRegex.test(usuario)) {
-            showError("El usuario debe tener entre 8 y 32 caracteres y solo puede contener letras, números, puntos y guiones bajos.");
-            return;
+            showFieldError(usuarioField, "El usuario debe tener entre 8 y 32 caracteres y solo puede contener letras, números, puntos y guiones bajos.");
+            error = true;
         }
 
         // 5. Validar 'Contraseña' y 'Confirmar contraseña'
         if (password.length < 8 || password.length > 32) {
-            showError("La contraseña debe tener entre 8 y 32 caracteres.");
-            return;
+            showFieldError(passwordField, "La contraseña debe tener entre 8 y 32 caracteres.");
+            error = true;
         }
         if (confirmPassword.length < 8 || confirmPassword.length > 32) {
-            showError("La confirmación de la contraseña debe tener entre 8 y 32 caracteres.");
-            return;
+            showFieldError(confirmPasswordField, "La confirmación de la contraseña debe tener entre 8 y 32 caracteres.");
+            error = true;
         }
         if (password !== confirmPassword) {
-            showError("Las contraseñas no coinciden.");
-            return;
+            showFieldError(confirmPasswordField, "Las contraseñas no coinciden.");
+            error = true;
         }
 
-        // Si se pasan todas las validaciones, puedes proceder con el envío de datos o la siguiente acción.
+        if (error) return;
+
+        // Si todas las validaciones son correctas
         console.log("Formulario validado exitosamente.");
-        // Aquí podrías limpiar el formulario, enviar los datos, etc.
         formulario.reset();
     });
 });
