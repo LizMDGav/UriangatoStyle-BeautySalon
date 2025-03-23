@@ -55,40 +55,45 @@
 
     <main>
         <h2>Registro</h2>
-        <form action="">
+
+        <form id="registroForm">
             <div class="campo">
                 <label>Nombre:</label>
-                <input type="text">
+                <input type="text" id="nombre" required>
             </div>
             <div class="campo">
                 <label>Apellidos:</label>
-                <input type="text">
+                <input type="text" id="apellidos" required>
             </div>
             <div class="campo">
                 <label>Correo electrónico:</label>
-                <input type="text">
+                <input type="email" id="correo" required>
             </div>
             <div class="campo">
                 <label>Usuario:</label>
-                <input type="text">
+                <input type="text" id="usuario" required>
             </div>
             <div class="campo">
-                <label>Constraseña:</label>
-                <input type="text">
+                <label>Contraseña:</label>
+                <input type="password" id="password" required>
             </div>
             <div class="campo">
-                <label>Confirmar constraseña:</label>
-                <input type="text">
+                <label>Confirmar contraseña:</label>
+                <input type="password" id="confirmPassword" required>
+            </div>
+        
+            <div class="btn">
+                <button type="submit">Crear cuenta</button>
             </div>
         </form>
-        <div class="btn">
-            <button type="submit">Crear cuenta</button>
-        </div>
+
         <div class="otros">
-            <a href="">Iniciar sesión</a>
+            <a href="login.html">Iniciar sesión</a>
         </div>
+
     </main>
 
+    <script src="js/registro.js"></script>
 </body>
 
 </html>
