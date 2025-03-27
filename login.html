@@ -16,7 +16,9 @@
 
 <body>
     <nav>
-        <a href="index.html"><section class="marca">Uriangato Style</section></a>
+        <a href="index.html">
+            <section class="marca">Uriangato Style</section>
+        </a>
 
         <!-- Botón Hamburguesa -->
         <input type="checkbox" id="menu-toggle">
@@ -58,12 +60,14 @@
         <form>
             <div class="campo">
                 <label>Usuario:</label>
-                <input type="text">
+                <input type="text" id="usuario" required>
             </div>
             <div class="campo">
                 <label>Contraseña:</label>
-                <input type="password">
+                <input type="password" id="password" required>
             </div>
+            <!-- Span para mostrar el error, ubicado justo encima del botón -->
+            <span class="error-message"></span>
             <div class="btn">
                 <button type="submit">Ingresar</button>
             </div>
@@ -74,6 +78,7 @@
             <a href="">¿Olvidaste tu contraseña?</a>
         </div>
     </main>
+    <script src="js/login.js"></script>
 </body>
 
 </html>
