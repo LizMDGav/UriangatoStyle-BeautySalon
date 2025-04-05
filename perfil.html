@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Perfil</title>
+    <title>Uringato Style - Perfil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/banner.css">
     <link rel="stylesheet" href="styles/componentes.css">
@@ -15,17 +15,18 @@
 </head>
 
 <body>
-
-    <nav>
+    <!-- <nav>
         <a href="index.html">
             <section class="marca">Uriangato Style</section>
         </a>
-        <!-- Botón Hamburguesa -->
+
+        !-- Botón Hamburguesa --
         <input type="checkbox" id="menu-toggle">
         <label for="menu-toggle" class="checkbtn">
             <i class="fas fa-bars"></i>
         </label>
-        <!-- Menú -->
+
+        !-- Menú --
         <ul class="menu">
             <li><a href="servicios.html" class="active">Servicios</a></li>
             <li><a href="galeria_trabajos.html">Galería</a></li>
@@ -33,25 +34,29 @@
             <li><a href="sucursales.html">Sucursales</a></li>
             <li><a href="nosotros.html">Nosotros</a></li>
         </ul>
-        <!-- Íconos -->
+
+        !-- Íconos --
         <div class="iconos">
-            <a href="#">
+            <a href="">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-linecap="round" stroke-linejoin="round" width="40" height="40" stroke-width="1">
-                    <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6">
+                    <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6">
                     </path>
                     <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
                 </svg>
             </a>
-            <a href="#">
+            <a href="login.html">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-linecap="round" stroke-linejoin="round" width="40" height="40" stroke-width="1">
                     <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
-                    <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path>
+                    <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
                 </svg>
+                <p id="usuario"></p>
             </a>
+            <button style="display: none;" class="logout-btn" id="logout-btn"> Cerrar Sesion</button>
         </div>
-    </nav>
+    </nav> -->
+    <div id="navbar-container"></div>
 
     <header>
         <h2>Perfil</h2>
@@ -63,35 +68,42 @@
             <form>
                 <div class="form-group">
                     <label>Nombre</label>
-                    <input type="text" value="Juan" disabled>
+                    <input type="text" id="nombre" >
+                    <span class="error-message"></span>
                 </div>
                 <div class="form-group">
                     <label>Apellido</label>
-                    <input type="text" value="Peres" disabled>
+                    <input type="text" id="apellidos" >
+                    <span class="error-message"></span>
                 </div>
                 <div class="form-group">
                     <label>Teléfono</label>
-                    <input type="tel" value="445 987 65 43">
-                </div>
-                <div class="form-group">
-                    <label>Contraseña actual</label>
-                    <input type="password" placeholder="********">
-                </div>
-                <div class="form-group">
-                    <label>Usuario</label>
-                    <input type="text" value="IngPeres" disabled>
+                    <input type="tel" id="telefono">
+                    <span class="error-message"></span>
                 </div>
                 <div class="form-group">
                     <label>Correo electrónico</label>
-                    <input type="email" value="juanper.198715@gmail.com">
+                    <input type="email" id="email">
+                    <span class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <input type="text" id="usuario" disabled>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña actual</label>
+                    <input type="password" id="password" placeholder="********">
+                    <span class="error-message"></span>
                 </div>
                 <div class="form-group">
                     <label>Nueva contraseña</label>
-                    <input type="password" placeholder="********">
+                    <input type="password" id="nuevaContrasena" placeholder="********">
+                    <span class="error-message"></span>
                 </div>
                 <div class="form-group">
                     <label>Confirmar contraseña</label>
-                    <input type="password" placeholder="********">
+                    <input type="password" id="confirmarContrasena" placeholder="********">
+                    <span class="error-message"></span>
                 </div>
 
                 <div class="form-group form-button">
@@ -127,10 +139,15 @@
             </div>
         </section>
     </main>
-    <a href="#" class="btn-flotante">Agendar cita</a>
+
+    <a href="login.html" id="flotant-btn" class="btn-flotante">Agendar cita</a>
+
     <footer>
 
     </footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="js/perfil.js"></script>
 </body>
 
 </html>

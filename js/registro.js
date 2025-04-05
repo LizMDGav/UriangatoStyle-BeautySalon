@@ -127,42 +127,42 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Si todas las validaciones son correctas
         console.log("Formulario validado exitosamente.");
-        
+
         /////////////////// Envío a la base de datos ///////////////////
-        
+
         const nombreCompleto = `${nombre} ${apellidos}`;
 
         async function registrarUsuario(nombreCompleto, correo_electronico, usuario, password) {
             try {
                 const response = await fetch("/api/usuarios/registro", {
                     method: "POST",
-                    headers: { 
+                    headers: {
                         "Content-Type": "application/json",
                         "Accept": "application/json"
                     },
-                    body: JSON.stringify({ 
-                        nombreCompleto, 
-                        correo_electronico, 
-                        usuario, 
-                        password 
+                    body: JSON.stringify({
+                        nombreCompleto,
+                        correo_electronico,
+                        usuario,
+                        password
                     }),
                 });
-        
+
                 const data = await response.json();
                 if (!response.ok) {
                     throw new Error(data.message || "Error en el servidor");
                 }
-        
+
                 if (data.success) {
                     alert("Usuario registrado exitosamente");
-                    
+
                     window.location.href = "/Login";
                 } else {
                     alert(data.message || "Error al registrar usuario");
                 }
             } catch (error) {
                 console.error("Error completo:", error);
-                
+
                 if (error.message.includes('Failed to fetch')) {
                     alert("No se pudo conectar al servidor");
                 } else {
@@ -173,9 +173,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         registrarUsuario(nombreCompleto, correo, usuario, password);
-        
+
 
         formulario.reset();
     });
-    
+
 });

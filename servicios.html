@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servicios</title>
+    <title>Uringato Style - Servicios</title>
     <link rel="stylesheet" href="styles/banner.css">
     <link rel="stylesheet" href="styles/servicios.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,18 +14,18 @@
 </head>
 
 <body>
-    <nav>
+    <!--<nav>
         <a href="index.html">
             <section class="marca">Uriangato Style</section>
         </a>
 
-        <!-- Botón Hamburguesa -->
+        !-- Botón Hamburguesa --
         <input type="checkbox" id="menu-toggle">
         <label for="menu-toggle" class="checkbtn">
             <i class="fas fa-bars"></i>
         </label>
 
-        <!-- Menú -->
+        !-- Menú --
         <ul class="menu">
             <li><a href="servicios.html" class="active">Servicios</a></li>
             <li><a href="galeria_trabajos.html">Galería</a></li>
@@ -33,7 +34,7 @@
             <li><a href="nosotros.html">Nosotros</a></li>
         </ul>
 
-        <!-- Íconos -->
+        !-- Íconos --
         <div class="iconos">
             <a href="">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -49,12 +50,17 @@
                     <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
                     <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
                 </svg>
+                 <p id="usuario"></p>
             </a>
+            <button style="display: none;" class="logout-btn" id="logout-btn"> Cerrar Sesion</button>
         </div>
-    </nav>
+    </nav>-->
+    <div id="navbar-container"></div>
+
     <header>
         <h2>Servicios</h2>
     </header>
+
     <main>
         <h2 class="sub-servicios">Servicios</h2>
         <hr>
@@ -93,10 +99,14 @@
             </div>
         </section>
     </main>
-    <a href="#" class="btn-flotante">Agendar cita</a>
+
+    <a href="login.html" id="flotant-btn" class="btn-flotante">Agendar cita</a>
+
     <footer>
 
     </footer>
+    
+    <script src="components/navbar.js"></script>
 </body>
 
 </html>

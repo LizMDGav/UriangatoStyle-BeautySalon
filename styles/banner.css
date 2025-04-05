@@ -198,3 +198,28 @@ a
 {
     text-decoration: none;
 }
+
+.logout-btn {
+    background-color: var(--morenito);
+    border: none;
+    font-size: medium;
+    color: white;
+    height: 2.5rem;
+    width: 7rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.logout-btn:hover {
+    background-color: var(--quemado);
+    transform: scale(1.05);
+}
+
+.logout-btn:active {
+    transform: scale(0.95);
+}
+
+.iconos a {
+    text-align: center;
+}

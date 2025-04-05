@@ -15,16 +15,18 @@
 </head>
 
 <body>
-    <nav>
-        <a href="index.html"><section class="marca">Uriangato Style</section></a>
+    <!-- <nav>
+        <a href="index.html">
+            <section class="marca">Uriangato Style</section>
+        </a>
 
-        <!-- Botón Hamburguesa -->
+        !-- Botón Hamburguesa --
         <input type="checkbox" id="menu-toggle">
         <label for="menu-toggle" class="checkbtn">
             <i class="fas fa-bars"></i>
         </label>
 
-        <!-- Menú -->
+        !-- Menú --
         <ul class="menu">
             <li><a href="servicios.html" class="active">Servicios</a></li>
             <li><a href="galeria_trabajos.html">Galería</a></li>
@@ -33,7 +35,7 @@
             <li><a href="nosotros.html">Nosotros</a></li>
         </ul>
 
-        <!-- Íconos -->
+        !-- Íconos --
         <div class="iconos">
             <a href="">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -49,78 +51,90 @@
                     <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
                     <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
                 </svg>
+                <p id="usuario"></p>
             </a>
+            <button style="display: none;" class="logout-btn" id="logout-btn"> Cerrar Sesion</button>
         </div>
-    </nav>
+    </nav> -->
+    <div id="navbar-container"></div>
+
     <header>
         <h2></h2>
     </header>
+
     <main>
         <h2>Servicios</h3>
-        <hr>
-        <section id="grid-container">
-            <div class="item">
-                <img src="images/cabello.jpg" alt="Cabello 1">
-                <h3>Cabello 1</h3>
-                <h4>$$$</h4>
-                <button>Agendar cita</button>
-            </div>
-            <div class="item">
-                <img src="images/cabello.jpg" alt="Cabello 2">
-                <h3>Cabello 2</h3>
-                <h4>$$$</h4>
-                <button>Agendar cita</button>
-            </div>
-            <div class="item">
-                <img src="images/cabello.jpg" alt="Cabello 3">
-                <h3>Cabello 3</h3>
-                <h4>$$$</h4>
-                <button>Agendar cita</button>
-            </div>
-            <div class="item">
-                <img src="images/cabello.jpg" alt="Cabello 4">
-                <h3>Cabello 4</h3>
-                <h4>$$$</h4>
-                <button>Agendar cita</button>
-            </div>
-           
-        </section>
-        <a href="servicios.html"><h3 class="Ver-todos"> Ver todos --></h3></a>
-        
-        <h2>Promociones</h3>
-        <hr>
-        <section id="grid-container">
-            <div class="item">
-                <img src="images/peinado.jpg" alt="Peinado 1">
-                <h3>Peinado 1</h3>
-                <h4><span>$$$ </span> $$$ </h4>
-                <button>Agendar cita</button>
-            </div>
-            <div class="item">
-                <img src="images/peinado.jpg" alt="Peinado 2">
-                <h3>Peinado 2</h3>
-                <h4><span>$$$ </span> $$$ </h4>
-                <button>Agendar cita</button>
-            </div>
-            <div class="item">
-                <img src="images/peinado.jpg" alt="Peinado 3">
-                <h3>Peinado 3</h3>
-                <h4><span>$$$ </span> $$$ </h4>
-                <button>Agendar cita</button>
-            </div>
-            <div class="item">
-                <img src="images/peinado.jpg" alt="Peinado 4">
-                <h3>Peinado 4</h3>
-                <h4><span>$$$ </span> $$$ </h4>
-                <button>Agendar cita</button>
-            </div>
-           
-        </section>
+            <hr>
+            <section id="grid-container">
+                <div class="item">
+                    <img src="images/cabello.jpg" alt="Cabello 1">
+                    <h3>Cabello 1</h3>
+                    <h4>$$$</h4>
+                    <button>Agendar cita</button>
+                </div>
+                <div class="item">
+                    <img src="images/cabello.jpg" alt="Cabello 2">
+                    <h3>Cabello 2</h3>
+                    <h4>$$$</h4>
+                    <button>Agendar cita</button>
+                </div>
+                <div class="item">
+                    <img src="images/cabello.jpg" alt="Cabello 3">
+                    <h3>Cabello 3</h3>
+                    <h4>$$$</h4>
+                    <button>Agendar cita</button>
+                </div>
+                <div class="item">
+                    <img src="images/cabello.jpg" alt="Cabello 4">
+                    <h3>Cabello 4</h3>
+                    <h4>$$$</h4>
+                    <button>Agendar cita</button>
+                </div>
+
+            </section>
+            <a href="servicios.html">
+                <h3 class="Ver-todos"> Ver todos --></h3>
+            </a>
+
+            <h2>Promociones</h3>
+                <hr>
+                <section id="grid-container">
+                    <div class="item">
+                        <img src="images/peinado.jpg" alt="Peinado 1">
+                        <h3>Peinado 1</h3>
+                        <h4><span>$$$ </span> $$$ </h4>
+                        <button>Agendar cita</button>
+                    </div>
+                    <div class="item">
+                        <img src="images/peinado.jpg" alt="Peinado 2">
+                        <h3>Peinado 2</h3>
+                        <h4><span>$$$ </span> $$$ </h4>
+                        <button>Agendar cita</button>
+                    </div>
+                    <div class="item">
+                        <img src="images/peinado.jpg" alt="Peinado 3">
+                        <h3>Peinado 3</h3>
+                        <h4><span>$$$ </span> $$$ </h4>
+                        <button>Agendar cita</button>
+                    </div>
+                    <div class="item">
+                        <img src="images/peinado.jpg" alt="Peinado 4">
+                        <h3>Peinado 4</h3>
+                        <h4><span>$$$ </span> $$$ </h4>
+                        <button>Agendar cita</button>
+                    </div>
+
+                </section>
     </main>
-    <a href="#" class="btn-flotante">Agendar cita</a>
+
+    <a href="login.html" id="flotant-btn" class="btn-flotante">Agendar cita</a>
+
     <footer>
 
     </footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="js/index.js"></script>
 </body>
 
 </html>

@@ -52,37 +52,37 @@ document.addEventListener('DOMContentLoaded', function () {
         async function handleLogin() {
             const usuario = usuarioField.value.trim();
             const password = passwordField.value;
-    
+
             if (!usuario || !password) {
                 errorSpan.textContent = "Usuario y contraseña son obligatorios";
                 return;
             }
-    
+
             try {
                 const response = await fetch("/api/usuarios/login", {
                     method: "POST",
-                    headers: { 
-                        "Content-Type": "application/json" 
+                    headers: {
+                        "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ 
-                        usuario, 
-                        password 
+                    body: JSON.stringify({
+                        usuario,
+                        password
                     })
                 });
-    
+
                 const data = await response.json();
-    
+
                 if (!response.ok) {
                     throw new Error(data.message || "Error en la autenticación");
                 }
-    
+
                 if (data.success) {
-                    window.location.href = "/index.html"; 
+                    window.location.href = "/index.html";
                     form.reset();
                 } else {
                     errorSpan.textContent = data.message || "Credenciales incorrectas";
                 }
-    
+
             } catch (error) {
                 console.error("Error en login:", error);
                 errorSpan.textContent = error.message || "Error al conectar con el servidor";
