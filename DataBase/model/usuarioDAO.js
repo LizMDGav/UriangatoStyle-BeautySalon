@@ -56,7 +56,7 @@ export const obtenerUsuarios = async () => {
 // Obtener perfil del usuario
 export const obtenerPerfilUsuario = async (usuario) => {
     const userData = await db.oneOrNone(
-        `SELECT nombre_completo, telefono, correo_electronico, usuario 
+        `SELECT id, nombre_completo, telefono, correo_electronico, usuario 
          FROM usuario 
          WHERE usuario = $1`,
         [usuario]

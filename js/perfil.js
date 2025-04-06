@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const form = document.querySelector("form");
+    const section = document.querySelector(".appointments-section");
 
     const showError = (input, msg) => {
         const span = input.parentNode.querySelector(".error-message");
@@ -31,6 +32,61 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     } catch (err) {
         console.error("Error al cargar perfil:", err);
+    }
+
+    // Precargar las citas programadas 
+    try {
+        const response = await fetch("/api/citas");
+        const data = await response.json();
+
+        if (!data.success) {
+            section.innerHTML += "<p>No se pudieron cargar las citas.</p>";
+            return;
+        }
+
+        const citasPorFecha = {};
+
+        data.citas.forEach(cita => {
+            const fecha = new Date(cita.fecha).toLocaleDateString("es-MX", {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric'
+            });
+
+            if (!citasPorFecha[fecha]) {
+                citasPorFecha[fecha] = [];
+            }
+
+            citasPorFecha[fecha].push(cita);
+        });
+
+        section.innerHTML = `<h3>Citas programadas</h3>`;
+
+        for (const fecha in citasPorFecha) {
+            const divFecha = document.createElement("div");
+            divFecha.classList.add("date-section");
+
+            divFecha.innerHTML = `<h4>${fecha}</h4>`;
+
+            citasPorFecha[fecha].forEach(cita => {
+                const divCita = document.createElement("div");
+                divCita.classList.add("appointment-row");
+
+                divCita.innerHTML = `
+                    <span class="time">${cita.hora.substring(0, 5)}</span>
+                    <span class="service">${cita.servicio}</span>
+                    <span class="price">$${parseFloat(cita.costo).toLocaleString()}</span>
+                `;
+
+                divFecha.appendChild(divCita);
+            });
+
+            section.appendChild(divFecha);
+        }
+
+    } catch (err) {
+        console.error("Error al cargar citas:", err);
+        section.innerHTML += "<p>Error al cargar las citas.</p>";
     }
 
     // Validar y enviar formulario

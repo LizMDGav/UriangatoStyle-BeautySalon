@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import { agregarUsuario, validarUsuario, validarAdministrador } from '../DataBase/model/usuarioDAO.js';
 import { obtenerPerfilUsuario, actualizarPerfilUsuario } from '../DataBase/model/usuarioDAO.js';
 import { obtenerPerfilAdmin, actualizarPerfilAdmin } from '../DataBase/model/usuarioDAO.js';
+import { agregarCita, obtenerCitasId } from '../DataBase/model/citaDAO.js';
+import { obtenerServicios} from '../DataBase/model/serviciosDAO.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -198,5 +200,85 @@ app.put("/api/usuarios/perfil", async (req, res) => {
     } catch (error) {
         console.error("Error al actualizar perfil:", error);
         res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// Ruta para mandar los datos de una nueva cita
+app.post("/api/citas/agendar", async (req, res) => {
+    const session = req.cookies.user_session;
+    if (!session) return res.status(401).json({ success: false, message: "No autorizado" });
+
+    try {
+        const { usuario } = JSON.parse(session);
+        const {
+            servicio,
+            telefono,
+            correo,
+            fecha,
+            hora,
+            costo,
+            domicilio
+        } = req.body;
+
+        // Validación de que no esten vacios los datos
+        if (!servicio || !telefono || !correo || !fecha || !hora || !costo) {
+            return res.status(400).json({ success: false, message: "Todos los campos son obligatorios." });
+        }
+
+        const usuarioDatos = await obtenerPerfilUsuario(usuario);
+        if (!usuarioDatos) return res.status(404).json({ success: false, message: "Usuario no encontrado." });
+
+        const idUsuario = usuarioDatos.id;
+
+        const nuevaCita = await agregarCita({
+            idUsuario,
+            servicio,
+            idSede: 1,
+            telefono,
+            correo,
+            fecha,
+            hora,
+            costo,
+            estatus: "Activa", // Activa, Cancelada, Terminada
+            domicilio
+        });
+
+        res.json({ success: true, message: "Cita registrada correctamente.", id: nuevaCita.id });
+
+    } catch (error) {
+        console.error("Error al agendar cita:", error);
+        res.status(500).json({ success: false, message: "Error al registrar la cita." });
+    }
+});
+
+// Obtener los servicios
+app.get("/api/servicios", async (req, res) => {
+    try {
+        const servicios = await obtenerServicios();
+        res.json({ success: true, servicios });
+    } catch (error) {
+        console.error("Error al obtener servicios:", error);
+        res.status(500).json({ success: false, message: "Error al cargar servicios." });
+    }
+});
+
+// Obtener las citas de X usuario
+app.get("/api/citas", async (req, res) => {
+    const session = req.cookies.user_session;
+    if (!session) return res.status(401).json({ success: false, message: "No autorizado" });
+
+    try {
+        const { usuario, tipo } = JSON.parse(session);
+
+        const perfil = await obtenerPerfilUsuario(usuario);
+        if (!perfil) return res.status(404).json({ success: false, message: "Usuario no encontrado" });
+
+        const citas = await obtenerCitasId({ id: perfil.id });
+
+        res.json({ success: true, citas });
+
+    } catch (error) {
+        console.error("Error al obtener citas:", error);
+        res.status(500).json({ success: false, message: "Error del servidor" });
     }
 });

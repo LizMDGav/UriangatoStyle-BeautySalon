@@ -64,65 +64,73 @@
 
     <div id="container">
         <main>
-            <form action="">
+            <form id="formularioAgendar">
                 <div>
                     <div>
                         <label>Nombre</label>
-                        <input type="text" class="input-field" value="Juan" disabled>
+                        <input type="text" class="input-field" id="nombre" disabled>
+                        <span class="error-message"></span>
                     </div>
                     <div>
                         <label>Apellido</label>
-                        <input type="text" class="input-field" value="Peres" disabled>
+                        <input type="text" class="input-field" id="apellidos" disabled>
+                        <span class="error-message"></span>
                     </div>
                     <div>
                         <label>Usuario</label>
-                        <input type="text" class="input-field" value="IngPeres" disabled>
+                        <input type="text" class="input-field" id="usuario" disabled>
+                        <span class="error-message"></span>
                     </div>
                     <div>
                         <label>Correo electrónico</label>
-                        <input type="email" class="input-field">
+                        <input type="email" class="input-field" id="correo">
+                        <span class="error-message"></span>
                     </div>
                     <div>
                         <label>Teléfono</label>
-                        <input type="tel" class="input-field">
+                        <input type="tel" class="input-field" id="telefono">
+                        <span class="error-message"></span>
                     </div>
                     <div>
                         <label>Domicilio (Opcional)</label>
-                        <input type="text" class="input-field">
+                        <input type="text" class="input-field" id="domicilio">
+                        <span class="error-message"></span>
                     </div>
                 </div>
-
+            
                 <div>
                     <div>
                         <label>Fecha</label>
-                        <input type="date" id="start" name="trip-start" value="2025-03-08" min="2025-03-08"
-                            max="2025-12-31">
+                        <input type="date" id="fecha" name="trip-start" value="2025-03-08" min="2025-03-08" max="2025-12-31">
+                        <span class="error-message"></span>
                     </div>
-
+            
                     <div>
                         <label>Hora</label>
-                        <select>
-                            <option>16:00</option>
-                            <option>17:00</option>
-                            <option>18:00</option>
+                        <select id="hora">
+                            <option value="">Selecciona una hora</option>
                         </select>
+                        <span class="error-message"></span>
                     </div>
+                    
                     <div>
                         <label>Servicio</label>
-                        <select>
-                            <option>Desperuanizador</option>
-                            <option>Otro servicio</option>
+                        <select id="servicio">
+                            <option value="">Selecciona un servicio</option>
                         </select>
+                        <span class="error-message"></span>
                     </div>
+                    
                     <div>
                         <label>Costo</label>
-                        <input type="text" class="input-field" value="$ 3,000" disabled>
+                        <input type="text" id="verCosto" class="input-field" value="$ 0" disabled>
                     </div>
                 </div>
             </form>
+            
             <div class="btn">
-                <button type="submit">Agendar</button>
-            </div>
+                <button type="submit" onclick="validarFormulario()">Agendar</button>
+            </div>            
         </main>
     </div>
 
@@ -133,6 +141,7 @@
     </footer>
 
     <script src="components/navbar.js"></script>
+    <script src="js/agendar_cita.js"></script>
 </body>
 
 </html>

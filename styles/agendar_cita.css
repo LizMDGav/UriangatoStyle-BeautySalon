@@ -67,6 +67,11 @@ footer
     margin: 20px;
 }
 
+span
+{
+    color: red;
+}
+
 @media (max-width:768px){
     main{
         width: 90%;
