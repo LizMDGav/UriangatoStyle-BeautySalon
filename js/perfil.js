@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("email").value = correo_electronico;
             document.getElementById("usuario").value = usuario;
         } else {
-            window.location.href = "/index.html";
+            window.location.href = "/Login";
             form.reset();
         }
     } catch (err) {
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             citasPorFecha[fecha].push(cita);
         });
 
-        section.innerHTML = `<h3>Citas programadas</h3>`;
+        section.innerHTML = `<h3>Mis Citas</h3>`;
 
         for (const fecha in citasPorFecha) {
             const divFecha = document.createElement("div");
@@ -81,12 +81,43 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <span class="time">${cita.hora.substring(0, 5)}</span>
                     <span class="service">${cita.servicio}</span>
                     <span class="price">$${parseFloat(cita.costo).toLocaleString()}</span>
+                    <button class="cancelar-cita" data-id="${cita.id}">Cancelar</button>
                 `;
                 divFecha.appendChild(divCita);
             });
 
             section.appendChild(divFecha);
         }
+
+        // Evento de cancelación
+        document.querySelectorAll(".cancelar-cita").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const id = btn.dataset.id;
+                const confirmar = confirm("¿Estás seguro de cancelar esta cita?");
+                if (!confirmar) return;
+
+                try {
+                    const res = await fetch(`/api/citas/${id}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ status: "Cancelada" })
+                    });
+
+                    const resultado = await res.json();
+                    if (resultado.success) {
+                        alert("Cita cancelada correctamente.");
+                        location.reload(); // o puedes remover el div directamente
+                    } else {
+                        alert("No se pudo cancelar la cita.");
+                    }
+                } catch (err) {
+                    console.error("Error al cancelar cita:", err);
+                    alert("Hubo un error al cancelar.");
+                }
+            });
+        });
 
     } catch (err) {
         console.error("Error al cargar citas:", err);

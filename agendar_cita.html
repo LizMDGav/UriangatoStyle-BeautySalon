@@ -15,47 +15,6 @@
 </head>
 
 <body>
-    <!--<nav>
-        <a href="index.html">
-            <section class="marca">Uriangato Style</section>
-        </a>
-
-        !-- Botón Hamburguesa --
-        <input type="checkbox" id="menu-toggle">
-        <label for="menu-toggle" class="checkbtn">
-            <i class="fas fa-bars"></i>
-        </label>
-
-        !-- Menú --
-        <ul class="menu">
-            <li><a href="servicios.html" class="active">Servicios</a></li>
-            <li><a href="galeria_trabajos.html">Galería</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="sucursales.html">Sucursales</a></li>
-            <li><a href="nosotros.html">Nosotros</a></li>
-        </ul>
-
-        !-- Íconos --
-        <div class="iconos">
-            <a href="">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-linecap="round" stroke-linejoin="round" width="40" height="40" stroke-width="1">
-                    <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6">
-                    </path>
-                    <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
-                </svg>
-            </a>
-            <a href="">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-linecap="round" stroke-linejoin="round" width="40" height="40" stroke-width="1">
-                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
-                    <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                </svg>
-                 <p id="usuario"></p>
-            </a>
-            <button style="display: none;" class="logout-btn" id="logout-btn"> Cerrar Sesion</button>
-        </div>
-    </nav>-->
     <div id="navbar-container"></div>
 
     <header>
@@ -64,73 +23,78 @@
 
     <div id="container">
         <main>
-            <form id="formularioAgendar">
-                <div>
-                    <div>
-                        <label>Nombre</label>
-                        <input type="text" class="input-field" id="nombre" disabled>
-                        <span class="error-message"></span>
-                    </div>
-                    <div>
-                        <label>Apellido</label>
-                        <input type="text" class="input-field" id="apellidos" disabled>
-                        <span class="error-message"></span>
-                    </div>
-                    <div>
-                        <label>Usuario</label>
-                        <input type="text" class="input-field" id="usuario" disabled>
-                        <span class="error-message"></span>
-                    </div>
-                    <div>
-                        <label>Correo electrónico</label>
-                        <input type="email" class="input-field" id="correo">
-                        <span class="error-message"></span>
-                    </div>
-                    <div>
-                        <label>Teléfono</label>
-                        <input type="tel" class="input-field" id="telefono">
-                        <span class="error-message"></span>
-                    </div>
-                    <div>
-                        <label>Domicilio (Opcional)</label>
-                        <input type="text" class="input-field" id="domicilio">
-                        <span class="error-message"></span>
-                    </div>
+
+            <form>
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" disabled>
+                    <span class="error-message"></span>
                 </div>
-            
-                <div>
-                    <div>
-                        <label>Fecha</label>
-                        <input type="date" id="fecha" name="trip-start" value="2025-03-08" min="2025-03-08" max="2025-12-31">
-                        <span class="error-message"></span>
-                    </div>
-            
-                    <div>
-                        <label>Hora</label>
-                        <select id="hora">
-                            <option value="">Selecciona una hora</option>
-                        </select>
-                        <span class="error-message"></span>
-                    </div>
-                    
-                    <div>
-                        <label>Servicio</label>
-                        <select id="servicio">
-                            <option value="">Selecciona un servicio</option>
-                        </select>
-                        <span class="error-message"></span>
-                    </div>
-                    
-                    <div>
-                        <label>Costo</label>
-                        <input type="text" id="verCosto" class="input-field" value="$ 0" disabled>
-                    </div>
+
+                <div class="form-group">
+                    <label for="apellidos">Apellidos</label>
+                    <input type="text" id="apellidos" disabled>
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="usuario">Usuario</label>
+                    <input type="text" id="usuario" disabled>
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="correo">Correo</label>
+                    <input type="email" id="correo">
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono">
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha">Fecha</label>
+                    <input type="date" id="fecha">
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="hora">Hora</label>
+                    <select id="hora">
+                        <option value="">Selecciona una hora</option>
+                    </select>
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="servicio">Servicio</label>
+                    <select id="servicio">
+                        <option value="">Selecciona un servicio</option>
+                    </select>
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="verCosto">Costo</label>
+                    <input type="text" id="verCosto" value="$ 0" disabled>
+
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="domicilio">Domicilio (opcional)</label>
+                    <input type="text" id="domicilio">
+                    <span class="error-message"></span>
+                </div>
+
+                <div class="form-group form-button">
+                    <button type="submit">Agendar cita</button>
                 </div>
             </form>
-            
-            <div class="btn">
-                <button type="submit" onclick="validarFormulario()">Agendar</button>
-            </div>            
+
         </main>
     </div>
 

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             const resultado = document.getElementById("grid-container");
-            resultado.innerHTML = ""; 
+            resultado.innerHTML = "";
 
             data.forEach(s => {
                 let precioFinal = Number(s.costo);
@@ -17,10 +17,36 @@ document.addEventListener("DOMContentLoaded", () => {
                         <img src="${s.imagen}" alt="${s.nombre}" />
                         <h3>${s.nombre}</h3>
                         <h4>$${precioFormateado}</h4>
-                        <button>Agendar cita</button>
+                        <button class="btn-agendar" data-servicio="${s.nombre}">Agendar Cita</button>
                     </div>
                 `;
             });
+
+            document.querySelectorAll(".btn-agendar").forEach(btn => {
+                btn.addEventListener("click", async () => {
+                    const servicio = btn.dataset.servicio;
+
+                    try {
+                        const res = await fetch("/api/usuarios/sesion");
+                        const data = await res.json();
+
+                        if (data.loggedIn && data.tipo === "usuario") {
+                            // Usuario válido, redireccionar
+                            window.location.href = `AgendarCita?servicio=${encodeURIComponent(servicio)}`;
+                        } else if (data.loggedIn && data.tipo === "admin") {
+                            alert("Los administradores no pueden agendar citas.");
+                        } else {
+                            // No logueado
+                            window.location.href = "/Login";
+                        }
+                    } catch (err) {
+                        console.error("Error al verificar sesión:", err);
+                        alert("Error al verificar sesión.");
+                    }
+                });
+            });
+
+
         } catch (error) {
             console.error("Error al obtener los servicios:", error);
         }

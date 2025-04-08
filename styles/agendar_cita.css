@@ -1,5 +1,4 @@
-:root 
-{
+:root {
     --salmon: #DFAEA4;
     --prietito: #ce968c;
     --morenito: #be7d74;
@@ -9,12 +8,11 @@
     --gris: #efefef;
 }
 
-*{
+* {
     box-sizing: border-box;
 }
 
-main 
-{
+main {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,8 +21,8 @@ main
     margin: 20px;
     width: 55%;
 }
-#container
-{
+
+#container {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -32,48 +30,55 @@ main
     justify-items: center;
 }
 
-.campo, .btn 
-{
+.campo,
+.btn {
     display: flex;
     flex-direction: column;
     margin: 1rem 0;
     gap: 0.6rem;
 }
 
-form 
-{
+form {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.2rem 1rem;
+    gap: 1rem 1rem;
+    padding: 2rem;
     width: 100%;
 }
 
-form div
-{
+form div {
     display: flex;
     flex-direction: column;
+    min-width: 300px;
 }
-form div div
-{
+
+form div div {
     margin-top: 7%;
 }
 
-footer
-{
+footer {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     margin: 20px;
 }
 
-span
-{
-    color: red;
-}
-
-@media (max-width:768px){
-    main{
+@media (max-width:768px) {
+    main {
         width: 90%;
     }
+}
+
+.error-message {
+    display: block;
+    color: #d9534f;
+    font-size: 14px;
+    margin-top: 4px;
+    font-weight: bold;
+    width: 18rem;
+}
+
+.form-button {
+    align-items: center;
 }

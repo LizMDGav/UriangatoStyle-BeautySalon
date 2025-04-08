@@ -1,24 +1,46 @@
 document.addEventListener("DOMContentLoaded", async () => {
+
+    //Si es un admin no dejar hacer nada
+    try {
+        const res = await fetch("/api/usuarios/sesion");
+        const data = await res.json();
+
+        if (data.tipo === "admin") {
+            window.location.href = "/";
+            form.reset();
+        }
+    } catch (err) {
+        console.error("Error al verificar sesión:", err);
+    }
+
     const form = document.querySelector("form");
     const selectServicio = document.getElementById("servicio");
     const inputCosto = document.getElementById("verCosto");
     const horaSelect = document.getElementById("hora");
+    const fechaInput = document.getElementById("fecha");
+
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("fecha").setAttribute("min", today);
+
+    const showError = (input, msg) => {
+        const span = input.parentNode.querySelector(".error-message");
+        if (span) span.textContent = msg;
+    };
 
     const clearError = input => {
         const span = input.parentNode.querySelector(".error-message");
         if (span) span.textContent = "";
     };
 
-    // Limpiar errores al escribir
-    form.querySelectorAll("input").forEach(input => {
+    form.querySelectorAll("input, select").forEach(input => {
         input.addEventListener("input", () => clearError(input));
+        input.addEventListener("change", () => clearError(input));
     });
 
-    // Precargar datos del usuario
+    // Cargar datos del perfil
     try {
         const res = await fetch("/api/usuarios/perfil");
         const result = await res.json();
-
         if (result.success) {
             const { nombre, apellido, telefono, correo_electronico, usuario } = result.data;
             document.getElementById("nombre").value = nombre;
@@ -26,16 +48,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("telefono").value = telefono.trim();
             document.getElementById("correo").value = correo_electronico;
             document.getElementById("usuario").value = usuario;
+        } else {
+            window.location.href = "/Login";
+            form.reset();
         }
     } catch (err) {
         console.error("Error al cargar datos:", err);
     }
 
-    // Precargar datos de los servicios
+    // Cargar servicios
     try {
         const response = await fetch("/api/servicios");
         const data = await response.json();
-
         if (data.success) {
             data.servicios.forEach(servicio => {
                 const option = document.createElement("option");
@@ -48,85 +72,121 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error cargando servicios:", error);
     }
 
-    // Escuchar cambios en el select para mostrar el costo
+    // Mostrar costo al cambiar servicio
     selectServicio.addEventListener("change", () => {
         const costo = selectServicio.value;
         inputCosto.value = `$ ${parseFloat(costo).toFixed(2)}`;
     });
 
-    for (let hora = 9; hora <= 19; hora++) {
-        const horaTexto = `${hora.toString().padStart(2, "0")}:00`;
-        const option = document.createElement("option");
-        option.value = horaTexto;
-        option.textContent = horaTexto;
-        horaSelect.appendChild(option);
-    }
-});
-async function validarFormulario() {
-    event.preventDefault(); // evita que se envíe el formulario
+    // Rellenar todas las horas disponibles inicialmente (08:00 a 19:00)
+    const generarHoras = () => {
+        horaSelect.innerHTML = '<option value="">Selecciona una hora</option>';
+        for (let h = 8; h <= 19; h++) {
+            const hora = `${h.toString().padStart(2, '0')}:00`;
+            const option = document.createElement("option");
+            option.value = hora;
+            option.textContent = hora;
+            horaSelect.appendChild(option);
+        }
+    };
+    generarHoras();
 
-    // Limpiar mensajes de error
-    document.querySelectorAll('.error-message').forEach(span => span.textContent = '');
+    // Deshabilitar horas ocupadas al seleccionar fecha
+    fechaInput.addEventListener("change", async () => {
+        generarHoras(); // Reinicia todas las opciones
+        const fechaSeleccionada = fechaInput.value;
+        console.log(fechaSeleccionada);
+        if (!fechaSeleccionada) return;
 
-    let valido = true;
+        try {
+            const res = await fetch(`/api/citas/ocupadas?fecha=${fechaSeleccionada}`);
+            const data = await res.json();
 
-    const correo = document.getElementById('correo').value;
-    const telefono = document.getElementById('telefono').value;
-    const fecha = document.getElementById('fecha').value;
-    const hora = document.getElementById('hora');
-    const servicio = document.getElementById('servicio');
-    const domicilio = document.getElementById('domicilio').value;
+            if (data.success && Array.isArray(data.horas)) {
+                data.horas.forEach(hora => {
+                    const horaSinSegundos = hora.substring(0, 5);
+                    const opcion = [...horaSelect.options].find(opt => opt.value === horaSinSegundos);
+                    if (opcion) horaSelect.removeChild(opcion);
+                });
+            }
 
-    if (correo.trim() === '' || !correo.includes('@')) {
-        correo.nextElementSibling.textContent = 'Ingresa un correo válido.';
-        valido = false;
-    }
+            console.log(data.horas);
+        } catch (error) {
+            console.error("Error al obtener horas ocupadas:", error);
+        }
+    });
 
-    if (telefono.trim() === '' || !/^\d{10}$/.test(telefono.trim())) {
-        telefono.nextElementSibling.textContent = 'El teléfono debe ser de 10 digitos.';
-        valido = false;
-    }
+    // Envío del formulario
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-    if (fecha === '') {
-        fecha.nextElementSibling.textContent = 'Selecciona una fecha valida.';
-        valido = false;
-    }
+        let error = false;
+        const correo = document.getElementById("correo");
+        const telefono = document.getElementById("telefono");
+        const fecha = document.getElementById("fecha");
+        const hora = document.getElementById("hora");
+        const servicio = document.getElementById("servicio");
+        const domicilio = document.getElementById("domicilio");
 
-    if (hora.value === '') {
-        hora.nextElementSibling.textContent = 'Selecciona una hora.';
-        valido = false;
-    }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (servicio.value === '') {
-        servicio.nextElementSibling.textContent = 'Selecciona un servicio.';
-        valido = false;
-    }
+        if (!emailRegex.test(correo.value.trim())) {
+            showError(correo, "Ingresa un correo válido.");
+            error = true;
+        }
 
-    if (valido) {
-        const servicioSelect = document.getElementById("servicio");
-        const horaSelect = document.getElementById("hora");
-    
-        const servicio = servicioSelect.options[servicioSelect.selectedIndex].text;
-        const costo = servicioSelect.value;
-        const hora = horaSelect.value;
-    
+        if (!/^\d{10}$/.test(telefono.value.trim())) {
+            showError(telefono, "El teléfono debe tener 10 dígitos.");
+            error = true;
+        }
+
+        if (!fecha.value) {
+            showError(fecha, "Selecciona una fecha válida.");
+            error = true;
+        }
+        /*fechaInput.addEventListener("change", () => {
+            const seleccionada = new Date(fechaInput.value);
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+        
+            if (seleccionada < hoy) {
+                showError(fecha, "Selecciona una fecha válida.");
+                fechaInput.value = "";
+            }
+        });*/
+
+        if (!hora.value) {
+            showError(hora, "Selecciona una hora.");
+            error = true;
+        }
+
+        if (!servicio.value) {
+            showError(servicio, "Selecciona un servicio.");
+            error = true;
+        }
+
+        if (error) return;
+
+        const servicioText = servicio.options[servicio.selectedIndex].text;
+        const costo = servicio.value;
+
         try {
             const response = await fetch("/api/citas/agendar", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    servicio,
-                    telefono,
-                    correo,
-                    fecha,
-                    hora,
+                    servicio: servicioText,
+                    telefono: telefono.value.trim(),
+                    correo: correo.value.trim(),
+                    fecha: fecha.value,
+                    hora: hora.value,
                     costo,
-                    domicilio
+                    domicilio: domicilio.value.trim()
                 })
             });
-    
+
             const data = await response.json();
-    
+
             if (data.success) {
                 alert("Cita agendada correctamente.");
                 location.reload();
@@ -134,8 +194,21 @@ async function validarFormulario() {
                 alert(data.message || "No se pudo agendar la cita.");
             }
         } catch (err) {
-            console.error("Error al crear la cita:", err);
-            alert("Error al crear la cita.");
+            console.error("Error al agendar cita:", err);
+            alert("Hubo un error al agendar la cita.");
+        }
+    });
+
+    // Seleccionar automáticamente el servicio si viene en la URL
+    const params = new URLSearchParams(window.location.search);
+    const servicioURL = params.get("servicio");
+
+    if (servicioURL) {
+        const opcion = [...selectServicio.options].find(opt => opt.textContent === servicioURL);
+        if (opcion) {
+            opcion.selected = true;
+            inputCosto.value = `$ ${parseFloat(opcion.value).toFixed(2)}`;
         }
     }
-}
+
+});

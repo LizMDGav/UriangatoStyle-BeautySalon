@@ -64,22 +64,50 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </div>
                 `;
 
-                const details = `
-                    <div class="appointment-details">
-                        <div class="details-data">
-                            <p><strong>Usuario:</strong> ${cita.usuario}</p>
-                            <p><strong>Nombre completo:</strong> ${cita.nombre_completo}</p>
-                            <p><strong>Teléfono:</strong> ${cita.telefono}</p>
-                            <p><strong>Correo:</strong> ${cita.correo}</p>
-                            ${cita.domicilio ? `<p><strong>Domicilio:</strong> ${cita.domicilio}</p>` : ""}
-                        </div>
-                        <div class="details-buttons">
-                            <button>Cancelar cita</button>
-                        </div>
+                const details = document.createElement("div");
+                details.classList.add("appointment-details");
+                details.innerHTML = `
+                    <div class="details-data">
+                        <p><strong>Usuario:</strong> ${cita.usuario}</p>
+                        <p><strong>Nombre completo:</strong> ${cita.nombre_completo}</p>
+                        <p><strong>Teléfono:</strong> ${cita.telefono}</p>
+                        <p><strong>Correo:</strong> ${cita.correo}</p>
+                        ${cita.domicilio ? `<p><strong>Domicilio:</strong> ${cita.domicilio}</p>` : ""}
+                    </div>
+                    <div class="details-buttons">
+                        <button class="cancel-btn">Cancelar cita</button>
                     </div>
                 `;
 
-                card.innerHTML = `${inputToggle}${summary}${details}`;
+                // Cancelar cita: evento click
+                details.querySelector(".cancel-btn").addEventListener("click", async () => {
+                    if (!confirm("¿Estás seguro de cancelar esta cita?")) return;
+
+                    try {
+                        const res = await fetch(`/api/citas/${cita.id}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ status: "Cancelada" })
+                        });
+
+                        const result = await res.json();
+
+                        if (result.success) {
+                            alert("Cita cancelada correctamente.");
+                            card.remove(); // Eliminar del DOM
+                        } else {
+                            alert("No se pudo cancelar la cita.");
+                        }
+                    } catch (error) {
+                        console.error("Error al cancelar cita:", error);
+                        alert("Ocurrió un error al cancelar la cita.");
+                    }
+                });
+
+                card.innerHTML = `${inputToggle}${summary}`;
+                card.appendChild(details);
                 section.appendChild(card);
             });
 

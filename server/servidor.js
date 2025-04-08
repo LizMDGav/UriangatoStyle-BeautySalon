@@ -450,3 +450,49 @@ app.get('/api/servicios/serviciospopulares', async (req, res) => {
         res.status(500).json({ error: `Error al obtener servicios populares: ${error.message}` });
     }
 });
+
+
+import { obtenerHorasOcupadas } from '../DataBase/model/citaDAO.js';
+app.get("/api/citas/ocupadas", async (req, res) => {
+    const fecha = req.query.fecha;
+    if (!fecha) return res.status(400).json({ success: false, message: "Fecha requerida" });
+
+    try {
+        const horas = await obtenerHorasOcupadas({ fecha });
+        res.json({ success: true, horas });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: "Error en el servidor" });
+    }
+});
+
+
+import { actualizarStatusCita } from '../DataBase/model/citaDAO.js';
+app.put('/api/citas/:id', async (req, res) => {
+    const id = req.params.id;
+    const { status } = req.body;
+
+    try {
+        await actualizarStatusCita(id, status);
+        res.json({ success: true });
+    } catch (err) {
+        console.error("Error al actualizar estado de cita:", err);
+        res.status(500).json({ success: false });
+    }
+});
+
+
+
+
+import cron from "node-cron";
+import { actualizarCitasVencidas } from '../DataBase/model/citaDAO.js';
+
+cron.schedule('0 * * * *', async () => {
+    try {
+        const ahora = new Date();
+        await actualizarCitasVencidas(ahora);
+        console.log("Citas vencidas actualizadas");
+    } catch (err) {
+        console.error("Error actualizando citas vencidas:", err);
+    }
+});
