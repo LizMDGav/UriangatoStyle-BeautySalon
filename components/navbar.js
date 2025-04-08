@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 usuarioIcon.href = "perfil.html";
 
                 if (flotantBtn.textContent == "Agendar cita") {
-                    flotantBtn.href = "agendar_cita.html";
+                    flotantBtn.href = "AgendarCita";
                 }
 
                 logoutBtn.style.display = "block";
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             logoutBtn.addEventListener("click", async () => {
                 await fetch("/api/usuarios/logout", { method: "POST" });
                 //location.reload();
-                window.location.href = "index.html";
+                window.location.href = "/";
             });
         }
 
