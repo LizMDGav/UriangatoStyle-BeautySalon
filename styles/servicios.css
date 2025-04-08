@@ -74,12 +74,12 @@ main {
     color: var(--morenito);
 }
 
-footer {
+/*footer {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     margin: 20px;
-}
+}*/
 
 #grid-container {
     display: grid;

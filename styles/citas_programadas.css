@@ -17,6 +17,7 @@
     background-image: linear-gradient(to top, var(--prietito) 0%, var(--piel) 100%);
     border-radius: 8px;
     margin-top: 1rem;
+    margin-bottom: 1rem;
     margin-left: auto;
     margin-right: auto;
     padding: 1rem;
@@ -206,3 +207,14 @@
         content: "▼";
     }
 }
+
+/*.details-data {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background-color: #f4f4f4;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #ddd;
+    gap: 1rem;
+}*/

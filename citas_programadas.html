@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Citas Programadas</title>
+    <title>Uringato Style - Citas Programadas</title>
     <link rel="stylesheet" href="styles/banner.css">
     <link rel="stylesheet" href="styles/componentes.css">
     <link rel="stylesheet" href="styles/citas_programadas.css">
@@ -15,57 +15,13 @@
 </head>
 
 <body>
-    <nav>
-        <a href="index.html">
-            <section class="marca">Uriangato Style</section>
-        </a>
-        <!-- Botón Hamburguesa -->
-        <input type="checkbox" id="menu-toggle">
-        <label for="menu-toggle" class="checkbtn">
-            <i class="fas fa-bars"></i>
-        </label>
-        <!-- Menú -->
-        <ul class="menu">
-            <li><a href="servicios.html" class="active">Servicios</a></li>
-            <li><a href="galeria_trabajos.html">Galería</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="sucursales.html">Sucursales</a></li>
-            <li><a href="nosotros.html">Nosotros</a></li>
-        </ul>
-        <!-- Íconos -->
-        <div class="iconos">
-            <a href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-linecap="round" stroke-linejoin="round" width="40" height="40" stroke-width="1">
-                    <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6">
-                    </path>
-                    <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
-                </svg>
-            </a>
-            <a href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-linecap="round" stroke-linejoin="round" width="40" height="40" stroke-width="1">
-                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
-                    <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path>
-                </svg>
-            </a>
-        </div>
-    </nav>
+    <div id="navbar-container"></div>
 
     <header>
         <h2>Citas Programadas</h2>
     </header>
 
     <main class="main-container">
-        <div class="calendar-container">
-            <h3>Fecha</h3>
-            <div class="calendar-actions">
-                <input type="date" class="date-input" value="2025-03-08" min="2025-03-08" max="2025-12-31">
-                <button>Inhabilitar día</button>
-                <button>Habilitar día</button>
-            </div>
-        </div>
-
 
         <div class="appointments-list">
             <div class="date-section">
@@ -90,7 +46,6 @@
                         <p><strong>Teléfono:</strong> 4454859562</p>
                         <p><strong>Correo:</strong> perupericmpervivo@gmail.com</p>
                         <div class="details-buttons">
-                            <button>Enviar recordatorio</button>
                             <button>Cancelar cita</button>
                         </div>
                     </div>
@@ -119,7 +74,6 @@
                         <p><strong>Teléfono:</strong> 4454859562</p>
                         <p><strong>Correo:</strong> perupericmpervivo@gmail.com</p>
                         <div class="details-buttons">
-                            <button>Enviar recordatorio</button>
                             <button>Cancelar cita</button>
                         </div>
                     </div>
@@ -144,7 +98,6 @@
                         <p><strong>Teléfono:</strong> 4454859562</p>
                         <p><strong>Correo:</strong> perupericmpervivo@gmail.com</p>
                         <div class="details-buttons">
-                            <button>Enviar recordatorio</button>
                             <button>Cancelar cita</button>
                         </div>
                     </div>
@@ -154,9 +107,10 @@
         </div>
     </main>
 
-    <footer>
+    <a href="login.html" id="flotant-btn" class="btn-flotante">Agendar cita</a>
 
-    </footer>
+    <script src="components/navbar.js"></script>
+    <script src="js/citas_programadas.js"></script>
 </body>
 
 </html>

@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (span) span.textContent = "";
     };
 
-    // Limpiar errores al escribir
     form.querySelectorAll("input").forEach(input => {
         input.addEventListener("input", () => clearError(input));
     });
@@ -37,11 +36,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error al cargar perfil:", err);
     }
 
-    // Precargar las citas programadas 
+    // Precargar citas del usuario (no admins)
     try {
-        const responseSesion = await fetch("/api/usuarios/sesion");
-        const sesionData = await responseSesion.json();
-        const tipoUsuario = sesionData.tipo;
+        const sesion = await fetch("/api/usuarios/sesion");
+        const { tipo } = await sesion.json();
+
+        if (tipo !== "usuario") {
+            section.style.display = "none";
+            return;
+        }
 
         const response = await fetch("/api/citas");
         const data = await response.json();
@@ -52,7 +55,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const citasPorFecha = {};
-
         data.citas.forEach(cita => {
             const fecha = new Date(cita.fecha).toLocaleDateString("es-MX", {
                 day: '2-digit',
@@ -60,10 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 year: 'numeric'
             });
 
-            if (!citasPorFecha[fecha]) {
-                citasPorFecha[fecha] = [];
-            }
-
+            if (!citasPorFecha[fecha]) citasPorFecha[fecha] = [];
             citasPorFecha[fecha].push(cita);
         });
 
@@ -72,7 +71,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         for (const fecha in citasPorFecha) {
             const divFecha = document.createElement("div");
             divFecha.classList.add("date-section");
-
             divFecha.innerHTML = `<h4>${fecha}</h4>`;
 
             citasPorFecha[fecha].forEach(cita => {
@@ -84,70 +82,21 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <span class="service">${cita.servicio}</span>
                     <span class="price">$${parseFloat(cita.costo).toLocaleString()}</span>
                 `;
-
                 divFecha.appendChild(divCita);
-
-                // Si es admin, mostrar info adicional en una fila aparte
-                if (tipoUsuario === "admin") {
-                    // Crear botón de ver/ocultar
-                    const verBtn = document.createElement("button");
-                    verBtn.classList.add("ver-detalles-btn");
-                    verBtn.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1.25">
-                        <path d="M6 9l6 6l6 -6"></path>
-                    </svg>
-`;
-                    divCita.appendChild(verBtn);
-
-                    // Crear div oculto
-                    const divExtra = document.createElement("div");
-                    divExtra.classList.add("appointment-row-extra");
-                    divExtra.style.display = "none";
-                    divExtra.innerHTML = `
-                        <span><strong>Usuario:</strong> ${cita.usuario}</span>
-                        <span><strong>Nombre:</strong> ${cita.nombre_completo}</span>
-                        <span><strong>Teléfono:</strong> ${cita.telefono}</span>
-                        <span><strong>Correo:</strong> ${cita.correo}</span>
-                        ${cita.domicilio ? `<span><strong>Domicilio:</strong> ${cita.domicilio}</span>` : ""}
-                    `;
-                    divFecha.appendChild(divExtra);
-
-                    // Cambiar ícono al hacer click
-                    verBtn.addEventListener("click", () => {
-                        const visible = divExtra.style.display === "flex";
-                        divExtra.style.display = visible ? "none" : "flex";
-
-                        verBtn.innerHTML = visible
-                            ? `
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1.25">
-                                <path d="M6 9l6 6l6 -6"></path>
-                            </svg>`
-                            : `
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1.25">
-                                <path d="M6 15l6 -6l6 6"></path>
-                            </svg>`;
-                    });
-
-                }
             });
 
             section.appendChild(divFecha);
         }
-
 
     } catch (err) {
         console.error("Error al cargar citas:", err);
         section.innerHTML += "<p>Error al cargar las citas.</p>";
     }
 
-    // Validar y enviar formulario
+    // Validación y envío del formulario
     form.addEventListener("submit", async e => {
         e.preventDefault();
 
-        // Obtener campos
         const nombreField = document.getElementById("nombre");
         const apellidosField = document.getElementById("apellidos");
         const telefonoField = document.getElementById("telefono");
@@ -166,7 +115,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         let error = false;
 
-        // Validar nombre y apellidos
         const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,64}$/;
         if (!nameRegex.test(nombre)) {
             showError(nombreField, "El nombre debe tener entre 2 y 64 letras.");
@@ -177,31 +125,28 @@ document.addEventListener("DOMContentLoaded", async () => {
             error = true;
         }
 
-        // Validar teléfono (solo si no está vacío)
         if (telefono && !/^\d{10}$/.test(telefono)) {
             showError(telefonoField, "El teléfono debe tener exactamente 10 dígitos.");
             error = true;
         }
 
-        // Validar correo
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!correo.includes('@') || correo.split('@')[0].length < 6) {
-            showError(emailField, "Correo inválido. La parte antes del @ debe tener al menos 6 caracteres.");
+            showError(emailField, "Correo inválido.");
             error = true;
         } else if (!emailRegex.test(correo)) {
             showError(emailField, "Ingresa un correo electrónico válido.");
             error = true;
         }
 
-        // Validar cambio de contraseña
         if (nuevaPass || confirmarPass) {
             if (!passActual) {
-                showError(passActualField, "Para cambiar tu contraseña debes ingresar tu contraseña actual.");
+                showError(passActualField, "Debes ingresar tu contraseña actual.");
                 error = true;
             }
 
             if (nuevaPass.length < 8 || nuevaPass.length > 32) {
-                showError(nuevaPassField, "La nueva contraseña debe tener entre 8 y 32 caracteres.");
+                showError(nuevaPassField, "Debe tener entre 8 y 32 caracteres.");
                 error = true;
             }
 
@@ -213,7 +158,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (error) return;
 
-        // Enviar al servidor
         try {
             const response = await fetch("/api/usuarios/perfil", {
                 method: "PUT",
@@ -229,7 +173,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             const data = await response.json();
-
             if (data.success) {
                 alert("Perfil actualizado correctamente.");
                 location.reload();
