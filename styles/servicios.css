@@ -81,9 +81,10 @@ main {
     margin: 20px;
 }*/
 
-#grid-container {
+#grid-container, #grid-containerprom {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(4, minmax(200px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
     padding: 16px;
 }
@@ -100,6 +101,7 @@ main {
 .item img {
     max-width: 100%;
     height: auto;
+    max-height: 200px;
     border-radius: 8px;
     margin-bottom: 8px;
 }
@@ -136,7 +138,7 @@ main {
 }
 
 @media (max-width: 600px) {
-    .grid-container {
+    .grid-container, #grid-containerprom {
         grid-template-columns: 1fr;
     }
 }

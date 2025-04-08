@@ -1,16 +1,23 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import multer from 'multer';
+import fs from 'fs';
 import cookieParser from 'cookie-parser';
 import { agregarUsuario, validarUsuario, validarAdministrador } from '../DataBase/model/usuarioDAO.js';
 import { obtenerPerfilUsuario, actualizarPerfilUsuario } from '../DataBase/model/usuarioDAO.js';
 import { obtenerPerfilAdmin, actualizarPerfilAdmin } from '../DataBase/model/usuarioDAO.js';
 import { agregarCita, obtenerCitasId } from '../DataBase/model/citaDAO.js';
-import { obtenerServicios} from '../DataBase/model/serviciosDAO.js'
+import { obtenerServicios, agregarServicio, actualizarServicio, eliminarServicio,
+    serviciosCabello, serviciosEyelashes, serviciosMaqPein, promociones, obtenerServiciosPopulares} from '../DataBase/model/serviciosDAO.js'
 import { obtenerTodasLasCitas } from '../DataBase/model/citaDAO.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Carpeta para guardar imágenes
+const imgPath = path.join('public', 'img_servicios');
+fs.mkdirSync(imgPath, { recursive: true });
 
 const app = express();
 app.set("port", 8000);
@@ -20,6 +27,7 @@ app.use(cookieParser());
 
 //Configuración para que tome los archivos de css y js desde la raiz del proyecto
 app.use(express.static(__dirname + "/../"));
+app.use(express.static('public'));
 
 // Rutas
 app.get("/", (req, res) => res.sendFile(path.join(__dirname, "../index.html")));
@@ -31,7 +39,7 @@ app.get("/Registro", (req, res) => res.sendFile(path.join(__dirname, "../registr
 app.get("/Galeria", (req, res) => res.sendFile(path.join(__dirname, "../galeria_trabajos.html")));
 app.get("/Blog", (req, res) => res.sendFile(path.join(__dirname, "../blog.html")));
 app.get("/AgendarCita", (req, res) => res.sendFile(path.join(__dirname, "../agendar_cita.html")));
-
+app.get("/AdministrarServicios", (req, res) => res.sendFile(path.join(__dirname, "../crud_servicios.html")));
 
 // Rutas para el envio de datos a la bd
 app.post("/api/usuarios/registro", async (req, res) => {
@@ -286,5 +294,157 @@ app.get("/api/citas", async (req, res) => {
     } catch (error) {
         console.error("Error al obtener citas:", error);
         res.status(500).json({ success: false, message: "Error del servidor" });
+    }
+});
+
+// Obtener los servicios
+app.get("/api/servicios", async (req, res) => {
+    try {
+        const servicios = await obtenerServicios();
+        res.json({ success: true, servicios });
+    } catch (error) {
+        console.error("Error al obtener servicios:", error);
+        res.status(500).json({ success: false, message: "Error al cargar servicios." });
+    }
+});
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, imgPath);
+    },
+    filename: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        const uniqueName = `${Date.now()}${ext}`;
+        cb(null, uniqueName);
+    }
+});
+
+const upload = multer({ storage });
+
+
+app.post('/api/servicios/agregar', upload.single('imagen'), async (req, res) => {
+    try {
+        const { nombre, descripcion, costo, descuento, categoria } = req.body;
+        const imagen = req.file ? `/img_servicios/${req.file.filename}` : null;
+
+        const nuevoServicio = await agregarServicio({
+            nombre, descripcion, costo, descuento, imagen, categoria
+        });
+
+        res.json({ success: true, servicio: nuevoServicio });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error al agregar servicio' });
+    }
+});
+
+
+
+// Ruta PUT actualizada
+app.put("/api/servicios/editar/:id", upload.single('imagen'), async (req, res) => {
+    const session = req.cookies.user_session;
+    if (!session) return res.status(401).json({ success: false, message: "No autorizado" });
+
+    try {
+        const { tipo } = JSON.parse(session);
+        if (tipo !== "admin") return res.status(403).json({ success: false, message: "No tienes permisos" });
+
+        const { nombre, descripcion, costo, descuento, categoria } = req.body;
+        if (!nombre) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "El nombre del servicio es requerido" 
+            });
+        }
+
+        // Obtener ruta de la nueva imagen si se cargó
+        const nuevaRutaImagen = req.file ? `/img_servicios/${req.file.filename}` : undefined;
+
+        const datosActualizacion = {
+            id: req.params.id,
+            nombre,
+            descripcion,
+            costo: parseFloat(costo),
+            descuento: descuento ? parseFloat(descuento) : 0,
+            categoria,
+            imagen: nuevaRutaImagen // puede ser undefined, y se manejará desde el DAO
+        };
+
+        const servicioActualizado = await actualizarServicio(datosActualizacion);
+        res.json({ success: true, servicio: servicioActualizado });
+    } catch (error) {
+        console.error("Error completo en la actualización:", error);
+        res.status(500).json({ 
+            success: false, 
+            message: "Error al actualizar servicio",
+            error: error.message,
+            stack: error.stack 
+        });
+    }
+});
+
+app.delete("/api/servicios/eliminar/:id", async (req, res) => {
+    const session = req.cookies.user_session;
+    if (!session) return res.status(401).json({ success: false, message: "No autorizado" });
+    
+    try {
+        const { tipo } = JSON.parse(session);
+        if (tipo !== "admin") return res.status(403).json({ success: false, message: "No tienes permisos" });
+
+        await eliminarServicio(req.params.id);
+        res.json({ success: true, message: "Servicio eliminado" });
+    } catch (error) {
+        console.error("Error al eliminar servicio:", error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+app.get('/api/servicios/cabello', async (req, res) => {
+    try {
+        const servicios = await serviciosCabello();
+        res.json(servicios);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener servicios de cabello' });
+    }
+});
+
+app.get('/api/servicios/eyelashes', async (req, res) => {
+    try {
+        const servicios = await serviciosEyelashes();
+        res.json(servicios);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener servicios de pestañas' });
+    }
+});
+
+app.get('/api/servicios/maquillaje_peinado', async (req, res) => {
+    try {
+        const servicios = await serviciosMaqPein();
+        res.json(servicios);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener servicios de maquillaje y peinado' });
+    }
+});
+
+app.get('/api/servicios/promociones', async (req, res) => {
+    try {
+        const servicios = await promociones();
+        res.json(servicios);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener promociones' });
+    }
+});
+
+app.get('/api/servicios/serviciospopulares', async (req, res) => {
+    try {
+        const servicios = await obtenerServiciosPopulares();
+        if (servicios.length === 0) {
+            res.status(404).json({ error: 'No se encontraron servicios populares.' });
+        } else {
+            res.json(servicios); // Si todo va bien, devolver los servicios
+        }
+    } catch (error) {
+        console.error(error); // Esto es importante para ver el error en la consola del servidor
+        res.status(500).json({ error: `Error al obtener servicios populares: ${error.message}` });
     }
 });

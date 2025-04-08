@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 logoutBtn.style.display = "block";
 
                 if (flotantBtn?.textContent === "Agendar cita") {
-                    flotantBtn.href = "agendar_cita.html";
+                    flotantBtn.href = "AgendarCita";
                 }
 
                 if (data.tipo === "admin") {
@@ -60,7 +60,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (logoutBtn) {
             logoutBtn.addEventListener("click", async () => {
                 await fetch("/api/usuarios/logout", { method: "POST" });
-                window.location.href = "index.html";
+                //location.reload();
+                window.location.href = "/";
             });
         }
 

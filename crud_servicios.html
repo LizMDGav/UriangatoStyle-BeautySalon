@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestionar Servicios</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/banner.css">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/crud.css">
+    <link rel="stylesheet" href="styles/componentes.css">
+    <style>
+        .image-preview {
+            max-width: 100px;
+            max-height: 100px;
+            margin-top: 10px;
+        }
+        .form-group.required label:after {
+            content: " *";
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menú -->
+    <div id="navbar-container"></div>
+
+    <div class="container">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <h2>Gestionar <b>Servicios</b></h2>
+                        </div>
+                        <div class="col-xs-6">
+                            <a href="#addServiceModal" class="btn btn-success" data-toggle="modal">
+                                <i class="material-icons">&#xE147;</i> <span>Agregar Servicio</span>
+                            </a>
+                            <a href="#deleteSelectedModal" class="btn btn-danger" data-toggle="modal">
+                                <i class="material-icons">&#xE15C;</i> <span>Eliminar Selección</span>
+                            </a>						
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="custom-checkbox">
+                                    <input type="checkbox" id="selectAll">
+                                    <label for="selectAll"></label>
+                                </span>
+                            </th>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Costo</th>
+                            <th>Descuento</th>
+                            <th>Imagen</th>
+                            <th>Categoría</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="serviciosTableBody">
+                        <!-- Los servicios se cargarán dinámicamente aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>        
+    </div>
+
+    <!-- Modal Añadir Servicio -->
+    <div id="addServiceModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="addServiceForm" enctype="multipart/form-data">
+                    <div class="modal-header">						
+                        <h4 class="modal-title">Agregar Servicio</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">					
+                        <div class="form-group required">
+                            <label>Nombre</label>
+                            <input type="text" name="nombre" class="form-control" required>
+                        </div>
+                        <div class="form-group required">
+                            <label>Descripción</label>
+                            <textarea name="descripcion" class="form-control" required rows="3"></textarea>
+                        </div>
+                        <div class="form-group required">
+                            <label>Costo</label>
+                            <input type="number" name="costo" class="form-control" step="0.01" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Descuento (%)</label>
+                            <input type="number" name="descuento" class="form-control" min="0" max="100" value="0">
+                        </div>	
+                        <div class="form-group">
+                            <label>Imagen</label>
+                            <input type="file" name="imagen" id="addImagen" class="form-control" accept="image/*">
+                            <small class="text-muted">Formatos aceptados: JPG, PNG, GIF (Max 2MB)</small>
+                            <div id="addImagePreview" class="image-preview"></div>
+                        </div>
+                        <div class="form-group required">
+                            <label>Categoría</label>
+                            <select name="categoria" class="form-control" required>
+                                <option value="">Seleccione una categoría</option>
+                                <option value="cabello">Cabello</option>
+                                <option value="pestañas">Pestañas</option>
+                                <option value="peinado y maquillaje">Maquillaje y peinado</option>
+                            </select>
+                        </div>			
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Servicio -->
+    <div id="editServiceModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="editServiceForm" enctype="multipart/form-data">
+                    <input type="hidden" name="id" id="editId">
+                    <div class="modal-header">						
+                        <h4 class="modal-title">Editar Servicio</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">					
+                        <div class="form-group required">
+                            <label>Nombre</label>
+                            <input type="text" name="nombre" id="editNombre" class="form-control" required>
+                        </div>
+                        <div class="form-group required">
+                            <label>Descripción</label>
+                            <textarea name="descripcion" id="editDescripcion" class="form-control" required rows="3"></textarea>
+                        </div>
+                        <div class="form-group required">
+                            <label>Costo</label>
+                            <input type="number" name="costo" id="editCosto" class="form-control" step="0.01" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Descuento (%)</label>
+                            <input type="number" name="descuento" id="editDescuento" class="form-control" min="0" max="100">
+                        </div>	
+                        <div class="form-group">
+                            <label>Imagen Actual</label>
+                            <div id="currentImagePreview" class="image-preview"></div>
+                            <label>Nueva Imagen (opcional)</label>
+                            <input type="file" name="imagen" id="editImagen" class="form-control" accept="image/*">
+                            <small class="text-muted">Dejar vacío para mantener la imagen actual</small>
+                            <div id="editImagePreview" class="image-preview"></div>
+                        </div>
+                        <div class="form-group required">
+                            <label>Categoría</label>
+                            <select name="categoria" id="editCategoria" class="form-control" required>
+                                <option value="cabello">Cabello</option>
+                                <option value="pestañas">Pestañas</option>
+                                <option value="peinado y maquillaje">Maquillaje y peinado</option>
+                            </select>
+                        </div>	
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-info">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Servicio -->
+    <div id="deleteServiceModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="deleteServiceForm">
+                    <input type="hidden" name="id" id="deleteId">
+                    <div class="modal-header">						
+                        <h4 class="modal-title">Eliminar Servicio</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">					
+                        <p>¿Estás seguro de eliminar este servicio?</p>
+                        <p class="text-warning"><small>Esta acción no se puede deshacer.</small></p>
+                        <div class="alert alert-danger" id="deleteServiceError" style="display: none;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Selección -->
+    <div id="deleteSelectedModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="deleteSelectedForm">
+                    <div class="modal-header">						
+                        <h4 class="modal-title">Eliminar Servicios Seleccionados</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">					
+                        <p>¿Estás seguro de eliminar los <span id="selectedCount">0</span> servicios seleccionados?</p>
+                        <p class="text-warning"><small>Esta acción no se puede deshacer.</small></p>
+                        <div class="alert alert-danger" id="deleteSelectedError" style="display: none;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="components/navbar.js"></script>
+    <script src="js/crud_servicios.js"></script>
+    <script>
+        // Previsualización de imágenes
+        function readURL(input, previewId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    $(previewId).html(`<img src="${e.target.result}" class="img-thumbnail">`);
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#addImagen").change(function() {
+            readURL(this, "#addImagePreview");
+        });
+
+        $("#editImagen").change(function() {
+            readURL(this, "#editImagePreview");
+        });
+
+        // Mostrar imagen actual al editar
+        function showCurrentImage(imageUrl) {
+            if (imageUrl) {
+                $("#currentImagePreview").html(`<img src="${imageUrl}" class="img-thumbnail">`);
+            } else {
+                $("#currentImagePreview").html('<p class="text-muted">No hay imagen</p>');
+            }
+        }
+    </script>
+</body>
+</html>
