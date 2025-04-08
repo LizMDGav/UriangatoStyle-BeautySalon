@@ -29,6 +29,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("telefono").value = telefono.trim();
             document.getElementById("email").value = correo_electronico;
             document.getElementById("usuario").value = usuario;
+        } else {
+            window.location.href = "/index.html";
+            form.reset();
         }
     } catch (err) {
         console.error("Error al cargar perfil:", err);
@@ -36,6 +39,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Precargar las citas programadas 
     try {
+        const responseSesion = await fetch("/api/usuarios/sesion");
+        const sesionData = await responseSesion.json();
+        const tipoUsuario = sesionData.tipo;
+
         const response = await fetch("/api/citas");
         const data = await response.json();
 
@@ -79,10 +86,57 @@ document.addEventListener("DOMContentLoaded", async () => {
                 `;
 
                 divFecha.appendChild(divCita);
+
+                // Si es admin, mostrar info adicional en una fila aparte
+                if (tipoUsuario === "admin") {
+                    // Crear botón de ver/ocultar
+                    const verBtn = document.createElement("button");
+                    verBtn.classList.add("ver-detalles-btn");
+                    verBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1.25">
+                        <path d="M6 9l6 6l6 -6"></path>
+                    </svg>
+`;
+                    divCita.appendChild(verBtn);
+
+                    // Crear div oculto
+                    const divExtra = document.createElement("div");
+                    divExtra.classList.add("appointment-row-extra");
+                    divExtra.style.display = "none";
+                    divExtra.innerHTML = `
+                        <span><strong>Usuario:</strong> ${cita.usuario}</span>
+                        <span><strong>Nombre:</strong> ${cita.nombre_completo}</span>
+                        <span><strong>Teléfono:</strong> ${cita.telefono}</span>
+                        <span><strong>Correo:</strong> ${cita.correo}</span>
+                        ${cita.domicilio ? `<span><strong>Domicilio:</strong> ${cita.domicilio}</span>` : ""}
+                    `;
+                    divFecha.appendChild(divExtra);
+
+                    // Cambiar ícono al hacer click
+                    verBtn.addEventListener("click", () => {
+                        const visible = divExtra.style.display === "flex";
+                        divExtra.style.display = visible ? "none" : "flex";
+
+                        verBtn.innerHTML = visible
+                            ? `
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1.25">
+                                <path d="M6 9l6 6l6 -6"></path>
+                            </svg>`
+                            : `
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="1.25">
+                                <path d="M6 15l6 -6l6 6"></path>
+                            </svg>`;
+                    });
+
+                }
             });
 
             section.appendChild(divFecha);
         }
+
 
     } catch (err) {
         console.error("Error al cargar citas:", err);

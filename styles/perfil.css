@@ -176,3 +176,37 @@ form {
     font-weight: bold;        
     width: 18rem;
 }
+
+.appointment-row-extra {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background-color: #f4f4f4;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #ddd;
+    gap: 1rem;
+}
+
+.appointment-row-extra span {
+    /*flex: 1;*/
+    min-width: 100px;
+    font-size: medium;
+}
+
+.ver-detalles-btn {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    /*padding: 0.3rem 0.8rem;*/
+    width: 3rem;
+    /*margin-top: 0.5rem;*/
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.ver-detalles-btn:hover {
+    background-color: #222;
+}

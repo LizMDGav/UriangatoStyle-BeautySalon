@@ -13,6 +13,27 @@ export const agregarCita = async ({ idUsuario, servicio, idSede, telefono,
     );
 };
 
-export const obtenerCitasId = async ({id}) => {
+export const obtenerCitasId = async ({ id }) => {
     return await db.any("SELECT * FROM citasprogramadas WHERE idusuario=$1 ORDER BY fecha, hora", [id]);
+};
+
+
+export const obtenerTodasLasCitas = async () => {
+    return await db.any(`
+        SELECT 
+            u.usuario, 
+            u.nombre_completo,
+            c.id,
+            c.idusuario,
+            c.servicio,
+            c.idsede,
+            c.telefono,
+            c.correo,
+            c.fecha,
+            c.hora,
+            c.costo,
+            c.estatus,
+            c.domicilio
+        FROM citasprogramadas c join usuario u ON c.idusuario = u.id ORDER BY fecha, hora;
+    `);
 };

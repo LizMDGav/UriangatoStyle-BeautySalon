@@ -7,6 +7,7 @@ import { obtenerPerfilUsuario, actualizarPerfilUsuario } from '../DataBase/model
 import { obtenerPerfilAdmin, actualizarPerfilAdmin } from '../DataBase/model/usuarioDAO.js';
 import { agregarCita, obtenerCitasId } from '../DataBase/model/citaDAO.js';
 import { obtenerServicios} from '../DataBase/model/serviciosDAO.js'
+import { obtenerTodasLasCitas } from '../DataBase/model/citaDAO.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -269,6 +270,11 @@ app.get("/api/citas", async (req, res) => {
 
     try {
         const { usuario, tipo } = JSON.parse(session);
+
+        if (tipo === "admin") {
+            const citas = await obtenerTodasLasCitas();
+            return res.json({ success: true, citas });
+        }
 
         const perfil = await obtenerPerfilUsuario(usuario);
         if (!perfil) return res.status(404).json({ success: false, message: "Usuario no encontrado" });
