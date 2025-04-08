@@ -40,6 +40,8 @@ app.get("/Galeria", (req, res) => res.sendFile(path.join(__dirname, "../galeria_
 app.get("/Blog", (req, res) => res.sendFile(path.join(__dirname, "../blog.html")));
 app.get("/AgendarCita", (req, res) => res.sendFile(path.join(__dirname, "../agendar_cita.html")));
 app.get("/AdministrarServicios", (req, res) => res.sendFile(path.join(__dirname, "../crud_servicios.html")));
+app.get("/Perfil", (req, res) => res.sendFile(path.join(__dirname, "../perfil.html")));
+app.get("/CitasProgramadas", (req, res) => res.sendFile(path.join(__dirname, "../citas_programadas.html")));
 
 // Rutas para el envio de datos a la bd
 app.post("/api/usuarios/registro", async (req, res) => {

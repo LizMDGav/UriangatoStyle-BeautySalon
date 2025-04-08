@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 if (data.success) {
-                    window.location.href = "/index.html";
+                    window.location.href = "/";
                     form.reset();
                 } else {
                     errorSpan.textContent = data.message || "Credenciales incorrectas";

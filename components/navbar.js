@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (data.loggedIn) {
                 document.getElementById("sesion").textContent = `${data.usuario}`;
-                usuarioIcon.href = "perfil.html";
+                usuarioIcon.href = "Perfil";
                 logoutBtn.style.display = "block";
 
                 if (flotantBtn?.textContent === "Agendar cita") {
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const iconosDiv = document.querySelector(".iconos");
 
                     const adminLink = document.createElement("a");
-                    adminLink.href = "citas_programadas.html";
+                    adminLink.href = "/CitasProgramadas";
                     adminLink.innerHTML = `
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-linecap="round"
