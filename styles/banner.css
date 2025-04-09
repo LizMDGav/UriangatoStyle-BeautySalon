@@ -136,6 +136,7 @@ nav {
     display: flex;
     gap: 1rem;
     padding: 0.2rem 1rem;
+    align-items: center;
 }
 
 .iconos a {
