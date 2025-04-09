@@ -45,6 +45,7 @@ app.get("/AgendarCita", (req, res) => res.sendFile(path.join(__dirname, "../agen
 app.get("/AdministrarServicios", (req, res) => res.sendFile(path.join(__dirname, "../crud_servicios.html")));
 app.get("/Perfil", (req, res) => res.sendFile(path.join(__dirname, "../perfil.html")));
 app.get("/CitasProgramadas", (req, res) => res.sendFile(path.join(__dirname, "../citas_programadas.html")));
+app.get("/CRUDServicios", (req, res) => res.sendFile(path.join(__dirname, "../crud_servicios.html")));
 app.get("/Crear_blog", (req, res) => res.sendFile(path.join(__dirname, "../creador_blogs.html")));
 app.get("/Ver_blog", (req, res) => res.sendFile(path.join(__dirname, "../blog_detalles.html")));
 
@@ -288,6 +289,31 @@ app.get("/api/citas", async (req, res) => {
 
         if (tipo === "admin") {
             const citas = await obtenerTodasLasCitas();
+            return res.json({ success: true, citas });
+        }
+
+        const perfil = await obtenerPerfilUsuario(usuario);
+        if (!perfil) return res.status(404).json({ success: false, message: "Usuario no encontrado" });
+
+        const citas = await obtenerCitasId({ id: perfil.id });
+
+        res.json({ success: true, citas });
+
+    } catch (error) {
+        console.error("Error al obtener citas:", error);
+        res.status(500).json({ success: false, message: "Error del servidor" });
+    }
+});
+
+app.get("/api/notificaciones", async (req, res) => {
+    const session = req.cookies.user_session;
+    if (!session) return res.status(401).json({ success: false, message: "No autorizado" });
+
+    try {
+        const { usuario, tipo } = JSON.parse(session);
+
+        if (tipo === "admin") {
+            const citas = 0;
             return res.json({ success: true, citas });
         }
 

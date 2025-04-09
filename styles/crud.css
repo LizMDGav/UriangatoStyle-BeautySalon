@@ -1,7 +1,22 @@
+nav {
+    height: unset;
+}
+nav ul {
+    margin-bottom: 0;
+}
+html {
+    font-size: unset;
+}
 body {
     color: #566787;
     background: #f5f5f5;
+    line-height: unset;
 }
+nav a:hover {
+    text-decoration: none;
+}
+
+
 .table-responsive {
     margin: 30px 0;
 }
