@@ -330,16 +330,7 @@ app.get("/api/notificaciones", async (req, res) => {
     }
 });
 
-// Obtener los servicios
-app.get("/api/servicios", async (req, res) => {
-    try {
-        const servicios = await obtenerServicios();
-        res.json({ success: true, servicios });
-    } catch (error) {
-        console.error("Error al obtener servicios:", error);
-        res.status(500).json({ success: false, message: "Error al cargar servicios." });
-    }
-});
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

@@ -9,17 +9,34 @@ document.addEventListener("DOMContentLoaded", () => {
             resultado.innerHTML = "";
 
             data.forEach(s => {
-                let precioFinal = Number(s.costo);
-                let precioFormateado = precioFinal.toFixed(2);
-
-                resultado.innerHTML += `
-                    <div class="item">
-                        <img src="${s.imagen}" alt="${s.nombre}" />
-                        <h3>${s.nombre}</h3>
-                        <h4>$${precioFormateado}</h4>
-                        <button class="btn-agendar" data-servicio="${s.nombre}">Agendar Cita</button>
-                    </div>
-                `;
+                const descuento =  Number(s.descuento).toFixed(2);
+                if (descuento > 0) {
+                    console.log("descuentoooooooooo", descuento);
+                    // Calcula el precio con descuento
+                    const precioOriginal = Number(s.costo).toFixed(2);
+                
+                    const precioPromocion = (s.costo - (s.costo * descuento / 100)).toFixed(2);
+                
+                    resultado.innerHTML += `
+                        <div class="item">
+                            <img src="${s.imagen}" alt="${s.nombre}" />
+                            <h3>${s.nombre}</h3>
+                            <h4>
+                                <span>$${precioOriginal}</span> $${precioPromocion}
+                            </h4>
+                            <button class="btn-agendar" data-servicio="${s.nombre}">Agendar Cita</button>
+                        </div>
+                    `;
+                } else {
+                    resultado.innerHTML += `
+                        <div class="item">
+                            <img src="${s.imagen}" alt="${s.nombre}" />
+                            <h3>${s.nombre}</h3>
+                            <h4>$${Number(s.costo).toFixed(2)}</h4>
+                            <button class="btn-agendar" data-servicio="${s.nombre}">Agendar Cita</button>
+                        </div>
+                    `;
+                }
             });
 
             document.querySelectorAll(".btn-agendar").forEach(btn => {

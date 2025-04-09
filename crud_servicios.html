@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,16 +14,34 @@
     <link rel="stylesheet" href="styles/crud.css">
     <style>
         .image-preview {
-            max-width: 100px;
-            max-height: 100px;
+            min-width: 150px;
+            min-height: 150px;
             margin-top: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f8f8;
         }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 140px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
         .form-group.required label:after {
             content: " *";
             color: red;
         }
     </style>
 </head>
+
 <body>
 
     <!-- Menú -->
@@ -42,7 +61,7 @@
                             </a>
                             <a href="#deleteSelectedModal" class="btn btn-danger" data-toggle="modal">
                                 <i class="material-icons">&#xE15C;</i> <span>Eliminar Selección</span>
-                            </a>						
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -70,7 +89,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>        
+        </div>
     </div>
 
     <!-- Modal Añadir Servicio -->
@@ -78,11 +97,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="addServiceForm" enctype="multipart/form-data">
-                    <div class="modal-header">						
+                    <div class="modal-header">
                         <h4 class="modal-title">Agregar Servicio</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">					
+                    <div class="modal-body">
                         <div class="form-group required">
                             <label>Nombre</label>
                             <input type="text" name="nombre" class="form-control" required>
@@ -98,7 +117,7 @@
                         <div class="form-group">
                             <label>Descuento (%)</label>
                             <input type="number" name="descuento" class="form-control" min="0" max="100" value="0">
-                        </div>	
+                        </div>
                         <div class="form-group">
                             <label>Imagen</label>
                             <input type="file" name="imagen" id="addImagen" class="form-control" accept="image/*">
@@ -113,7 +132,7 @@
                                 <option value="pestañas">Pestañas</option>
                                 <option value="peinado y maquillaje">Maquillaje y peinado</option>
                             </select>
-                        </div>			
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -130,27 +149,30 @@
             <div class="modal-content">
                 <form id="editServiceForm" enctype="multipart/form-data">
                     <input type="hidden" name="id" id="editId">
-                    <div class="modal-header">						
+                    <div class="modal-header">
                         <h4 class="modal-title">Editar Servicio</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">					
+                    <div class="modal-body">
                         <div class="form-group required">
                             <label>Nombre</label>
                             <input type="text" name="nombre" id="editNombre" class="form-control" required>
                         </div>
                         <div class="form-group required">
                             <label>Descripción</label>
-                            <textarea name="descripcion" id="editDescripcion" class="form-control" required rows="3"></textarea>
+                            <textarea name="descripcion" id="editDescripcion" class="form-control" required
+                                rows="3"></textarea>
                         </div>
                         <div class="form-group required">
                             <label>Costo</label>
-                            <input type="number" name="costo" id="editCosto" class="form-control" step="0.01" min="0" required>
+                            <input type="number" name="costo" id="editCosto" class="form-control" step="0.01" min="0"
+                                required>
                         </div>
                         <div class="form-group">
                             <label>Descuento (%)</label>
-                            <input type="number" name="descuento" id="editDescuento" class="form-control" min="0" max="100">
-                        </div>	
+                            <input type="number" name="descuento" id="editDescuento" class="form-control" min="0"
+                                max="100">
+                        </div>
                         <div class="form-group">
                             <label>Imagen Actual</label>
                             <div id="currentImagePreview" class="image-preview"></div>
@@ -166,7 +188,7 @@
                                 <option value="pestañas">Pestañas</option>
                                 <option value="peinado y maquillaje">Maquillaje y peinado</option>
                             </select>
-                        </div>	
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -183,11 +205,11 @@
             <div class="modal-content">
                 <form id="deleteServiceForm">
                     <input type="hidden" name="id" id="deleteId">
-                    <div class="modal-header">						
+                    <div class="modal-header">
                         <h4 class="modal-title">Eliminar Servicio</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">					
+                    <div class="modal-body">
                         <p>¿Estás seguro de eliminar este servicio?</p>
                         <p class="text-warning"><small>Esta acción no se puede deshacer.</small></p>
                         <div class="alert alert-danger" id="deleteServiceError" style="display: none;"></div>
@@ -206,11 +228,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="deleteSelectedForm">
-                    <div class="modal-header">						
+                    <div class="modal-header">
                         <h4 class="modal-title">Eliminar Servicios Seleccionados</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body">					
+                    <div class="modal-body">
                         <p>¿Estás seguro de eliminar los <span id="selectedCount">0</span> servicios seleccionados?</p>
                         <p class="text-warning"><small>Esta acción no se puede deshacer.</small></p>
                         <div class="alert alert-danger" id="deleteSelectedError" style="display: none;"></div>
@@ -235,20 +257,20 @@
         function readURL(input, previewId) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                
-                reader.onload = function(e) {
+
+                reader.onload = function (e) {
                     $(previewId).html(`<img src="${e.target.result}" class="img-thumbnail">`);
                 }
-                
+
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        $("#addImagen").change(function() {
+        $("#addImagen").change(function () {
             readURL(this, "#addImagePreview");
         });
 
-        $("#editImagen").change(function() {
+        $("#editImagen").change(function () {
             readURL(this, "#editImagePreview");
         });
 
@@ -260,6 +282,7 @@
                 $("#currentImagePreview").html('<p class="text-muted">No hay imagen</p>');
             }
         }
-    </script> 
+    </script>
 </body>
+
 </html>

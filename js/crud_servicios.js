@@ -114,6 +114,7 @@ $(document).ready(function() {
                     $('#editServiceModal input[name="costo"]').val(servicio.costo);
                     $('#editServiceModal input[name="descuento"]').val(servicio.descuento || 0);
                     $('#editServiceModal select[name="categoria"]').val(servicio.categoria);
+                    showCurrentImage(servicio.imagen)
                     $('#editServiceModal').data('id', id);
                 }
             }
