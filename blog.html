@@ -7,11 +7,11 @@
     <title>Uringato Style - Blog</title>
     <link rel="stylesheet" href="styles/banner.css">
     <link rel="stylesheet" href="styles/blog.css">
+    <link rel="stylesheet" href="styles/footer.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="styles/footer.css">
 </head>
 
 <body>
@@ -55,7 +55,7 @@
             </a>
             <button style="display: none;" class="logout-btn" id="logout-btn"> Cerrar Sesion</button>
         </div>
-    </nav>-->
+    </nav> -->
     <div id="navbar-container"></div>
 
     <header>
@@ -63,31 +63,41 @@
     </header>
 
     <main>
-        <hr>
-        <section class="contenedor-blog normal">
-
-            <div class="informacion_Izq textoB">
-                <h2>Lipstick Profesional Aprueba De Agua</h2>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Culpa neque rerum distinctio tempora
-                    perferendis sed labore modi commodi cumque consequatur, itaque accusamus sit optio nobis sint harum
-                    nostrum natus dignissimos?</p>
-                <button type="button" onclick="location.href='blog_detalles.html'">Ver más</button>
+        <!-- Panel de Administración (visible solo para administradores) -->
+        <div id="admin-panel" class="admin-panel">
+            <div class="admin-header">
+                <h2>Administración de Blogs</h2>
+                <button id="btn-crear-blog" class="btn-crear-blog">
+                    <i class="fas fa-plus"></i> Crear Nuevo Blog
+                </button>
             </div>
-            <img class="imagen" src="images/Maquillaje.jpg" alt="Maquillaje 1">
-        </section>
-
-        <hr>
-        <section class="contenedor-blog invertida">
-            <img class="imagen" src="images/Maquillaje2.jpg" alt="Maquillaje 1">
-            <div class="informacion_Der textoB">
-                <h2>Top Modelos Más Candentes</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec erot sern, molestie non dictum eget,
-                    dictum in lorem. Mauris justo justo, condimentum nec placerat eget, malesuado et orci. Aenean vitae
-                    elementum enim. Vestibulum luctus blandit.</p>
-                <button type="button">Ver más</button>
+            
+            <div id="blogs-grid" class="blogs-grid">
+                <!-- Los blogs se cargarán dinámicamente aquí -->
             </div>
-        </section>
+        </div>
+
+        <!-- Contenido normal del blog (visible para usuarios) -->
+        <div id="user-blog-content" class="user-blog-content">
+            <!-- Los blogs se cargarán dinámicamente aquí desde la base de datos -->
+            <div id="loading-blogs" style="text-align: center; padding: 20px;">
+                <p>Contenido pronto...</p>
+            </div>
+        </div>
     </main>
+
+    <!-- Modal de confirmación para eliminar blog -->
+    <div id="modal-eliminar" class="modal">
+        <div class="modal-content">
+            <h3>Confirmar eliminación</h3>
+            <p>¿Estás seguro de que deseas eliminar este blog? Esta acción no se puede deshacer.</p>
+            <div class="modal-actions">
+                <button id="modal-cancel" class="modal-btn modal-btn-cancel">Cancelar</button>
+                <button id="modal-confirm" class="modal-btn modal-btn-confirm">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
 
     <a href="login.html" id="flotant-btn" class="btn-flotante">Agendar cita</a>
 
@@ -95,6 +105,7 @@
 
     <script src="components/navbar.js"></script>
     <script src="components/footer.js"></script>
+    <script src="js/blogs.js"></script>
 </body>
 
 </html>

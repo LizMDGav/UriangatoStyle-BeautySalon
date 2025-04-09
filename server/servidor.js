@@ -8,9 +8,12 @@ import { agregarUsuario, validarUsuario, validarAdministrador } from '../DataBas
 import { obtenerPerfilUsuario, actualizarPerfilUsuario } from '../DataBase/model/usuarioDAO.js';
 import { obtenerPerfilAdmin, actualizarPerfilAdmin } from '../DataBase/model/usuarioDAO.js';
 import { agregarCita, obtenerCitasId } from '../DataBase/model/citaDAO.js';
-import { obtenerServicios, agregarServicio, actualizarServicio, eliminarServicio,
-    serviciosCabello, serviciosEyelashes, serviciosMaqPein, promociones, obtenerServiciosPopulares} from '../DataBase/model/serviciosDAO.js'
+import {
+    obtenerServicios, agregarServicio, actualizarServicio, eliminarServicio,
+    serviciosCabello, serviciosEyelashes, serviciosMaqPein, promociones, obtenerServiciosPopulares
+} from '../DataBase/model/serviciosDAO.js'
 import { obtenerTodasLasCitas } from '../DataBase/model/citaDAO.js';
+import { crearBlog, obtenerBlogs, obtenerBlogPorId, obtenerSeccionesBlog, eliminarBlog, actualizarSeccionesBlog, actualizarBlog } from '../DataBase/model/blogsDAO.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -42,6 +45,8 @@ app.get("/AgendarCita", (req, res) => res.sendFile(path.join(__dirname, "../agen
 app.get("/AdministrarServicios", (req, res) => res.sendFile(path.join(__dirname, "../crud_servicios.html")));
 app.get("/Perfil", (req, res) => res.sendFile(path.join(__dirname, "../perfil.html")));
 app.get("/CitasProgramadas", (req, res) => res.sendFile(path.join(__dirname, "../citas_programadas.html")));
+app.get("/Crear_blog", (req, res) => res.sendFile(path.join(__dirname, "../creador_blogs.html")));
+app.get("/Ver_blog", (req, res) => res.sendFile(path.join(__dirname, "../blog_detalles.html")));
 
 // Rutas para el envio de datos a la bd
 app.post("/api/usuarios/registro", async (req, res) => {
@@ -353,9 +358,9 @@ app.put("/api/servicios/editar/:id", upload.single('imagen'), async (req, res) =
 
         const { nombre, descripcion, costo, descuento, categoria } = req.body;
         if (!nombre) {
-            return res.status(400).json({ 
-                success: false, 
-                message: "El nombre del servicio es requerido" 
+            return res.status(400).json({
+                success: false,
+                message: "El nombre del servicio es requerido"
             });
         }
 
@@ -376,11 +381,11 @@ app.put("/api/servicios/editar/:id", upload.single('imagen'), async (req, res) =
         res.json({ success: true, servicio: servicioActualizado });
     } catch (error) {
         console.error("Error completo en la actualización:", error);
-        res.status(500).json({ 
-            success: false, 
+        res.status(500).json({
+            success: false,
             message: "Error al actualizar servicio",
             error: error.message,
-            stack: error.stack 
+            stack: error.stack
         });
     }
 });
@@ -388,7 +393,7 @@ app.put("/api/servicios/editar/:id", upload.single('imagen'), async (req, res) =
 app.delete("/api/servicios/eliminar/:id", async (req, res) => {
     const session = req.cookies.user_session;
     if (!session) return res.status(401).json({ success: false, message: "No autorizado" });
-    
+
     try {
         const { tipo } = JSON.parse(session);
         if (tipo !== "admin") return res.status(403).json({ success: false, message: "No tienes permisos" });
@@ -496,3 +501,430 @@ cron.schedule('0 * * * *', async () => {
         console.error("Error actualizando citas vencidas:", err);
     }
 });
+
+
+/////////////////////////////////////BLOGS//////////////////////////////////////////
+// Ruta absoluta para guardar imágenes
+const IMAGES_DIR = path.join(__dirname, '../public/blogs');
+
+// Asegurarse de que el directorio existe
+if (!fs.existsSync(IMAGES_DIR)) {
+    fs.mkdirSync(IMAGES_DIR, { recursive: true });
+}
+
+// Configuración de multer para guardar imágenes
+const almacenamiento = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, IMAGES_DIR);
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const ext = path.extname(file.originalname);
+        cb(null, 'blog-' + uniqueSuffix + ext);
+    }
+});
+
+const subir = multer({
+    storage: almacenamiento,
+    limits: { fileSize: 5 * 1024 * 1024 }, // Limitar a 5MB
+    fileFilter: function (req, file, cb) {
+        // Aceptar solo imágenes
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+            return cb(new Error('Solo se permiten archivos de imagen!'), false);
+        }
+        cb(null, true);
+    }
+});
+
+// Añade esta función justo después de la configuración de Multer (después de la línea 25)
+// Función para eliminar archivos subidos
+function eliminarArchivosSubidos(files) {
+    if (!files || !Array.isArray(files)) {
+        return;
+    }
+
+    files.forEach((file) => {
+        try {
+            if (fs.existsSync(file.path)) {
+                fs.unlinkSync(file.path);
+                console.log(`Archivo eliminado: ${file.path}`);
+            }
+        } catch (error) {
+            console.error(`Error al eliminar archivo ${file.path}:`, error);
+        }
+    });
+}
+
+
+
+// Añade estas rutas después de tus rutas existentes
+
+// Ruta para la página de creación de blogs (solo para administradores)
+app.get("/crear-blog", (req, res) => {
+    const session = req.cookies.user_session;
+    if (!session) return res.redirect("/Login");
+
+    try {
+        const { tipo } = JSON.parse(session);
+        if (tipo !== "admin") return res.redirect("/");
+
+        res.sendFile(path.join(__dirname, "../creador_blogs.html"));
+    } catch (error) {
+        res.redirect("/Login");
+    }
+});
+
+
+
+
+// API para crear un nuevo blog
+app.post("/api/blogs", subir.any(), async (req, res) => {
+    console.log("=== NUEVA SOLICITUD DE CREACIÓN DE BLOG ===");
+    console.log("Headers:", req.headers);
+    console.log("Content-Type:", req.headers['content-type']);
+    console.log("Campos del formulario:", Object.keys(req.body));
+
+    if (req.files && req.files.length > 0) {
+        console.log("Archivos recibidos:", req.files.map(f => ({
+            fieldname: f.fieldname,
+            originalname: f.originalname,
+            size: f.size
+        })));
+    } else {
+        console.log("No se recibieron archivos");
+    }
+
+
+    const session = req.cookies.user_session;
+    if (!session) {
+        // Si no hay sesión, eliminar los archivos que se hayan subido
+        eliminarArchivosSubidos(req.files);
+        return res.status(401).json({ success: false, message: "No autorizado" });
+    }
+
+    try {
+        const { usuario, tipo } = JSON.parse(session);
+        if (tipo !== "admin") {
+            // Si no es admin, eliminar los archivos que se hayan subido
+            eliminarArchivosSubidos(req.files);
+            return res.status(403).json({ success: false, message: "Acceso denegado" });
+        }
+
+        console.log("Archivos recibidos:", req.files);
+        console.log("Datos del formulario:", req.body);
+
+        // Obtener el ID del administrador
+        const adminData = await obtenerPerfilAdmin(usuario);
+        if (!adminData) return res.status(404).json({ success: false, message: "Administrador no encontrado" });
+
+        // Verificar que los campos requeridos existan
+        if (!req.body.title || !req.body.description) {
+            return res.status(400).json({
+                success: false,
+                message: "Faltan campos requeridos (título o descripción)"
+            });
+        }
+
+        // Verificar que sections sea un JSON válido
+        let parsedSections;
+        try {
+            parsedSections = JSON.parse(req.body.sections || '[]');
+        } catch (e) {
+            console.error("Error al parsear sections:", e);
+            return res.status(400).json({
+                success: false,
+                message: "El formato de las secciones es inválido"
+            });
+        }
+
+        // Procesar imagen principal
+        let mainImagePath = null;
+        const mainImageFile = req.files.find(file => file.fieldname === 'mainImage');
+        if (mainImageFile) {
+            mainImagePath = '/public/blogs/' + mainImageFile.filename;
+        }
+
+        // Crear el blog
+        const blogId = await crearBlog({
+            title: req.body.title,
+            description: req.body.description,
+            image_path: mainImagePath,
+            admin_id: adminData.id,
+            sections: parsedSections.map((section, index) => {
+                // Buscar imagen de sección
+                let sectionImagePath = null;
+                const sectionImageFile = req.files.find(file => file.fieldname === `sectionImage_${index}`);
+
+                if (sectionImageFile) {
+                    sectionImagePath = '/public/blogs/' + sectionImageFile.filename;
+                }
+
+                return {
+                    subtitle: section.subtitle || null,
+                    content: section.content,
+                    image_path: sectionImagePath,
+                    section_order: section.section_order
+                };
+            })
+        });
+
+        res.status(201).json({
+            success: true,
+            message: 'Blog creado exitosamente',
+            blogId
+        });
+
+    } catch (error) {
+        console.error('Error al crear blog:', error);
+
+        // Eliminar archivos subidos en caso de error
+        if (req.files) {
+            req.files.forEach(file => {
+                fs.unlink(file.path, (err) => {
+                    if (err) console.error('Error al eliminar archivo:', err);
+                });
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: 'Error al crear el blog: ' + error.message
+        });
+    }
+});
+
+// API para obtener todos los blogs
+app.get("/api/blogs", async (req, res) => {
+    try {
+        const blogs = await obtenerBlogs();
+        res.json({ success: true, blogs: blogs || [] });
+    } catch (error) {
+        console.error("Error al obtener blogs:", error);
+        res.status(500).json({ success: false, message: "Error al cargar blogs." });
+    }
+});
+
+// API para obtener un blog específico con sus secciones
+app.get("/api/blogs/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const blog = await obtenerBlogPorId(id);
+
+        if (!blog) {
+            return res.status(404).json({ success: false, message: "Blog no encontrado" });
+        }
+
+        const secciones = await obtenerSeccionesBlog(id);
+
+        res.json({
+            success: true,
+            blog: {
+                ...blog,
+                sections: secciones
+            }
+        });
+    } catch (error) {
+        console.error("Error al obtener blog:", error);
+        res.status(500).json({ success: false, message: "Error al cargar el blog." });
+    }
+});
+
+// API para eliminar un blog
+app.delete("/api/blogs/:id", async (req, res) => {
+    console.log(`Solicitud para eliminar blog ID: ${req.params.id}`)
+
+    const session = req.cookies.user_session
+    if (!session) {
+        return res.status(401).json({ success: false, message: "No autorizado" })
+    }
+
+    try {
+        const { tipo } = JSON.parse(session)
+        if (tipo !== "admin") {
+            return res.status(403).json({ success: false, message: "Acceso denegado" })
+        }
+
+        const blogId = Number.parseInt(req.params.id)
+        if (isNaN(blogId)) {
+            return res.status(400).json({ success: false, message: "ID de blog inválido" })
+        }
+
+        // Eliminar el blog y sus imágenes asociadas
+        const eliminado = await eliminarBlog(blogId)
+
+        if (eliminado) {
+            return res.json({
+                success: true,
+                message: "Blog eliminado correctamente",
+            })
+        } else {
+            return res.status(404).json({
+                success: false,
+                message: "Blog no encontrado",
+            })
+        }
+    } catch (error) {
+        console.error("Error al eliminar blog:", error)
+        return res.status(500).json({
+            success: false,
+            message: "Error al eliminar el blog",
+            error: error.message,
+        })
+    }
+});
+
+
+// Añadir esta ruta para la página de edición de blogs (solo para administradores)
+app.get("/editar-blog", (req, res) => {
+    const session = req.cookies.user_session
+    if (!session) return res.redirect("/Login")
+
+    try {
+        const { tipo } = JSON.parse(session)
+        if (tipo !== "admin") return res.redirect("/")
+
+        // Usar la misma página de creación, el JavaScript detectará si es edición
+        res.sendFile(path.join(__dirname, "../creador_blogs.html"))
+    } catch (error) {
+        res.redirect("/Login")
+    }
+})
+
+// Añadir esta API para actualizar un blog existente
+app.put("/api/blogs/:id", subir.any(), async (req, res) => {
+    console.log("=== SOLICITUD DE ACTUALIZACIÓN DE BLOG ===")
+    console.log("Headers:", req.headers)
+    console.log("Content-Type:", req.headers["content-type"])
+    console.log("Campos del formulario:", Object.keys(req.body))
+
+    if (req.files && req.files.length > 0) {
+        console.log(
+            "Archivos recibidos:",
+            req.files.map((f) => ({
+                fieldname: f.fieldname,
+                originalname: f.originalname,
+                size: f.size,
+            })),
+        )
+    } else {
+        console.log("No se recibieron archivos")
+    }
+
+    const session = req.cookies.user_session
+    if (!session) {
+        // Si no hay sesión, eliminar los archivos que se hayan subido
+        eliminarArchivosSubidos(req.files);
+        return res.status(401).json({ success: false, message: "No autorizado" });
+    }
+
+    try {
+        const { usuario, tipo } = JSON.parse(session)
+        if (tipo !== "admin") {
+            // Si no es admin, eliminar los archivos que se hayan subido
+            eliminarArchivosSubidos(req.files);
+            return res.status(403).json({ success: false, message: "Acceso denegado" });
+        }
+
+        const blogId = Number.parseInt(req.params.id)
+        if (isNaN(blogId)) {
+            return res.status(400).json({ success: false, message: "ID de blog inválido" })
+        }
+
+        // Verificar que el blog existe
+        const blogExistente = await obtenerBlogPorId(blogId)
+        if (!blogExistente) {
+            return res.status(404).json({ success: false, message: "Blog no encontrado" })
+        }
+
+        // Verificar que los campos requeridos existan
+        if (!req.body.title || !req.body.description) {
+            return res.status(400).json({
+                success: false,
+                message: "Faltan campos requeridos (título o descripción)",
+            })
+        }
+
+        // Verificar que sections sea un JSON válido
+        let parsedSections
+        try {
+            parsedSections = JSON.parse(req.body.sections || "[]")
+        } catch (e) {
+            console.error("Error al parsear sections:", e)
+            return res.status(400).json({
+                success: false,
+                message: "El formato de las secciones es inválido",
+            })
+        }
+
+        // Procesar imagen principal
+        let mainImagePath = blogExistente.image_path // Mantener la imagen existente por defecto
+        const mainImageFile = req.files.find((file) => file.fieldname === "mainImage")
+        if (mainImageFile) {
+            // Si se sube una nueva imagen, actualizar la ruta
+            mainImagePath = "/public/blogs/" + mainImageFile.filename
+
+            // Eliminar la imagen anterior si existe
+            if (blogExistente.image_path) {
+                // Obtener la ruta absoluta del archivo
+                const rutaAbsoluta = path.join(__dirname, "..", blogExistente.image_path)
+                // Verificar si el archivo existe antes de intentar eliminarlo
+                if (fs.existsSync(rutaAbsoluta)) {
+                    fs.unlinkSync(rutaAbsoluta)
+                    console.log(`Imagen principal anterior eliminada: ${rutaAbsoluta}`)
+                }
+            }
+        }
+
+        // Procesar las imágenes de las secciones
+        for (let i = 0; i < parsedSections.length; i++) {
+            const section = parsedSections[i]
+            const sectionImageFile = req.files.find((file) => file.fieldname === `sectionImage_${i}`)
+
+            if (sectionImageFile) {
+                // Si se sube una nueva imagen, actualizar la ruta
+                section.image_path = "/public/blogs/" + sectionImageFile.filename
+            }
+            // Si no hay nueva imagen y no hay image_path, asegurarse de que sea null
+            if (!section.image_path) {
+                section.image_path = null
+            }
+        }
+
+        // Actualizar el blog principal
+        await actualizarBlog({
+            id: blogId,
+            title: req.body.title,
+            description: req.body.description,
+            image_path: mainImagePath,
+        })
+
+        // Actualizar las secciones del blog
+        await actualizarSeccionesBlog(blogId, parsedSections)
+
+        res.json({
+            success: true,
+            message: "Blog actualizado exitosamente",
+            blogId,
+        })
+    } catch (error) {
+        console.error("Error al actualizar blog:", error)
+
+        // Eliminar archivos subidos en caso de error
+        if (req.files) {
+            req.files.forEach((file) => {
+                fs.unlink(file.path, (err) => {
+                    if (err) console.error("Error al eliminar archivo:", err)
+                })
+            })
+        }
+
+        res.status(500).json({
+            success: false,
+            message: "Error al actualizar el blog: " + error.message,
+        })
+    }
+})
+
+
+// Ruta para ver un blog específico
+app.get("/:id", (req, res) => res.sendFile(path.join(__dirname, "../blog_detalles.html")));
