@@ -15,8 +15,21 @@ export const agregarServicio = async ({ nombre, descripcion, costo, descuento, i
 };
 
 export const actualizarServicio = async ({ id, nombre, descripcion, costo, descuento, imagen, categoria }) => {
-    return await db.one(
-        `UPDATE servicios SET
+    if (imagen == null) {
+        return await db.one(
+            `UPDATE servicios SET
+            nombre = $2,
+            descripcion = $3,
+            costo = $4,
+            descuento = $5,
+            categoria = $7
+            WHERE id = $1
+            RETURNING *`,
+            [id, nombre, descripcion, costo, descuento, imagen, categoria]
+        );
+    } else {
+        return await db.one(
+            `UPDATE servicios SET
         nombre = $2,
         descripcion = $3,
         costo = $4,
@@ -25,8 +38,10 @@ export const actualizarServicio = async ({ id, nombre, descripcion, costo, descu
         categoria = $7
         WHERE id = $1
         RETURNING *`,
-        [id, nombre, descripcion, costo, descuento, imagen, categoria]
-    );
+            [id, nombre, descripcion, costo, descuento, imagen, categoria]
+        );
+    }
+
 };
 
 export const eliminarServicio = async (id) => {
