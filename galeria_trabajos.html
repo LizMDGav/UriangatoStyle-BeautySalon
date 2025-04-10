@@ -65,31 +65,24 @@
     <main>
         <hr>
         <div class="category-services">
-            <button>Cabello</button>
-            <button>Pestañas</button>
-            <button>Maquillaje y peinado</button>
-            <button>Promociones</button>
+            <button class="category-btn active" data-category="cabello">Cabello</button>
+            <button class="category-btn" data-category="pestanas">Pestañas</button>
+            <button class="category-btn" data-category="maquillaje_peinado">Maquillaje y peinado</button>
         </div>
         <hr>
 
-        <section class="contenedor">
-            <img src="images/Maquillaje.jpg" alt="Maquillaje 1">
-            <div class="informacion">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec erot sern, molestie non dictum eget,
-                    dictum in lorem. Mauris justo justo, condimentum nec placerat eget, malesuado et orci. Aenean vitae
-                    elementum enim. Vestibulum luctus blandit.</p>
-            </div>
-        </section>
+        <div class="loading-indicator">
+            <div class="spinner"></div>
+            <p>Cargando imágenes...</p>
+        </div>
 
-        <hr>
-        <section class="contenedor">
-            <img src="images/Maquillaje2.jpg" alt="Maquillaje 1">
-            <div class="informacion">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec erot sern, molestie non dictum eget,
-                    dictum in lorem. Mauris justo justo, condimentum nec placerat eget, malesuado et orci. Aenean vitae
-                    elementum enim. Vestibulum luctus blandit.</p>
-            </div>
-        </section>
+        <div class="gallery-container">
+            <!-- Las imágenes se cargarán dinámicamente aquí -->
+        </div>
+
+        <div class="no-images-message" style="display: none;">
+            <p>No hay imágenes disponibles para esta categoría.</p>
+        </div>
     </main>
 
     <a href="login.html" id="flotant-btn" class="btn-flotante">Agendar cita</a>
@@ -98,6 +91,7 @@
 
     <script src="components/navbar.js"></script>
     <script src="components/footer.js"></script>
+    <script src="js/galeria_trabajos.js"></script>
 </body>
 
 </html>

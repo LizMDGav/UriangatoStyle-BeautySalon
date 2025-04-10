@@ -1,118 +1,171 @@
-:root 
-{
-    --salmon: #DFAEA4;
+:root {
+    --salmon: #dfaea4;
     --prietito: #ce968c;
     --morenito: #be7d74;
     --quemado: #6d463e;
     --piel: #efc7bc;
     --werito: #ffdfd4;
     --gris: #efefef;
-}
-
-*{
+  }
+  
+  * {
     box-sizing: border-box;
-}
-
-h3
-{
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: "League Spartan", sans-serif;
+  }
+  
+  h3 {
     color: var(--salmon);
-}
-main
-{
+  }
+  
+  main {
     display: flex;
     flex-direction: column;
-    margin-top: 30px;
-    margin-left: 50px;
-    margin-right: 50px;
-}
-.contenedor
-{
+    margin: 30px 50px;
+  }
+  
+  /* Estilos para los botones de categoría */
+  .category-services {
     display: flex;
-    flex-direction: row;
-    margin: 40px;
-    align-items: center;
-}
-
-.informacion
-{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-img
-{
-    width: 40%;
-    height: 30%;
-    margin: 20px;
-}
-
-.category-services {
+    justify-content: center;
     overflow-x: auto;
     white-space: nowrap;
-    
+    padding: 10px 0;
     scrollbar-color: var(--salmon) transparent;
-    scrollbar-width: thin; 
-}
-
-.category-services::-webkit-scrollbar {
+    scrollbar-width: thin;
+  }
+  
+  .category-services::-webkit-scrollbar {
     height: 8px;
-}
-
-.category-services::-webkit-scrollbar-track {
+  }
+  
+  .category-services::-webkit-scrollbar-track {
     background: transparent;
-}
-
-.category-services::-webkit-scrollbar-thumb {
+  }
+  
+  .category-services::-webkit-scrollbar-thumb {
     background-color: var(--salmon);
-    border-radius: 10px; 
-}
-
-
-.category-services button {
+    border-radius: 10px;
+  }
+  
+  .category-services button {
     display: inline-block;
     color: black;
-    border: 0;
+    background: transparent;
+    border: none;
     padding: 10px 24px;
     cursor: pointer;
     font-weight: bold;
     font-size: 20px;
-}
+    transition: color 0.3s, transform 0.2s;
+  }
   
-.category-services button:not(:last-child) 
-{
-    border-right: none; 
-}
-  
-.category-services:after 
-{
-    content: "";
-    clear: both;
-    display: table;
-}
-  
-.category-services button:hover 
-{
+  .category-services button:hover {
     color: var(--morenito);
-}
-
-@media (max-width: 768px) {
-    .contenedor {
-      margin: 20px;
-    }
-    .contenedor img {
-      width: 50%; 
-      margin-right: 20px;
+    transform: scale(1.05);
+  }
+  
+  .category-services button.active {
+    color: var(--quemado);
+    border-bottom: 3px solid var(--quemado);
+  }
+  
+  /* Estilos para la galería */
+  .gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+  }
+  
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    aspect-ratio: 1 / 1;
+  }
+  
+  .gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s;
+  }
+  
+  .gallery-item:hover img {
+    transform: scale(1.05);
+  }
+  
+  /* Indicador de carga */
+  .loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+  }
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--salmon);
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 10px;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
     }
   }
-
-@media (max-width: 480px) {
-    .contenedor {
-        flex-direction: column;
-        margin: 20px;
+  
+  /* Mensaje de no hay imágenes */
+  .no-images-message {
+    text-align: center;
+    padding: 40px 0;
+    font-size: 18px;
+    color: #666;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    main {
+      margin: 20px;
     }
-    .contenedor img {
-        width: 100%;   
-        margin: 0 0 20px 0; 
+  
+    .gallery-container {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
     }
-
-}
+  }
+  
+  @media (max-width: 480px) {
+    main {
+      margin: 10px;
+    }
+  
+    .category-services button {
+      font-size: 16px;
+      padding: 8px 16px;
+    }
+  
+    .gallery-container {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+  }
+  
