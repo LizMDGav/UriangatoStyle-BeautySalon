@@ -8,6 +8,8 @@ import { agregarUsuario, validarUsuario, validarAdministrador } from '../DataBas
 import { obtenerPerfilUsuario, actualizarPerfilUsuario } from '../DataBase/model/usuarioDAO.js';
 import { obtenerPerfilAdmin, actualizarPerfilAdmin } from '../DataBase/model/usuarioDAO.js';
 import { agregarCita, obtenerCitasId } from '../DataBase/model/citaDAO.js';
+import { obtenerReporteVentas } from '../DataBase/model/usuarioDAO.js';
+
 import {
     obtenerServicios, agregarServicio, actualizarServicio, eliminarServicio,
     serviciosCabello, serviciosEyelashes, serviciosMaqPein, promociones, obtenerServiciosPopulares
@@ -945,3 +947,44 @@ app.put("/api/blogs/:id", subir.any(), async (req, res) => {
 
 // Ruta para ver un blog específico
 app.get("/:id", (req, res) => res.sendFile(path.join(__dirname, "../blog_detalles.html")));
+
+
+//REPORTE DE VENTAS****************************************************
+app.get('/api/ventas/reporte', async (req, res) => {
+    const session = req.cookies.user_session;
+    if (!session) return res.status(401).json({ success: false, message: "No autorizado" });
+
+    try {
+        // Extraer parámetros de la consulta
+        const { tipo, fecha, mes, anio } = req.query;
+        
+        console.log('Parámetros recibidos en el endpoint:', req.query);
+        
+        // Validar parámetros básicos
+        if (!tipo) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "El tipo de reporte es requerido" 
+            });
+        }
+        
+        // Llamar al DAO para obtener los datos
+        const datos = await obtenerReporteVentas({ tipo, fecha, mes, anio });
+        
+        console.log('Datos a enviar en la respuesta:', datos);
+        
+        // Enviar respuesta
+        res.json({
+            success: true,
+            etiquetas: datos.etiquetas,
+            valores: datos.valores
+        });
+        
+    } catch (error) {
+        console.error('Error al generar reporte:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: "Error al generar el reporte: " + error.message 
+        });
+    }
+});

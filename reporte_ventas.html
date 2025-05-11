@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uringato Style - Reporte de Ventas</title>
+    <link rel="stylesheet" href="styles/banner.css">
+    <link rel="stylesheet" href="styles/componentes.css">
+    <link rel="stylesheet" href="styles/reporte_ventas.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+
+    <header>
+        <h2>Reporte de ventas</h2>
+    </header>
+
+    <main class="main-container">
+        <div class="reporte-container">
+            <div class="filtros-section">
+                <div class="periodo-options">
+                    <div class="periodo-option">
+                        <input type="radio" id="dia" name="periodo" value="dia" checked>
+                        <label for="dia">Día</label>
+                    </div>
+                    <div class="periodo-option">
+                        <input type="radio" id="mes" name="periodo" value="mes">
+                        <label for="mes">Mes</label>
+                    </div>
+                    <div class="periodo-option">
+                        <input type="radio" id="anio" name="periodo" value="anio">
+                        <label for="anio">Año</label>
+                    </div>
+                </div>
+
+                <div class="fecha-section">
+                    <label for="fecha-input">Fecha:</label>
+                    <div id="fecha-container">
+                        <!-- Aquí se insertará dinámicamente el input según la selección -->
+                        <input type="date" id="fecha-input" class="date-input">
+                    </div>
+                </div>
+
+                <button id="generar-btn" class="btn-generar">Generar</button>
+            </div>
+
+            <div class="grafica-container">
+                <canvas id="ventas-chart"></canvas>
+            </div>
+
+            <div class="footer-info">
+                <p>Uriangato Style | Educación Superior 2000, Benito Juárez, 38980 Uriangato, Gto.</p>
+                <p>Teléfono: 445 457 7468</p>
+            </div>
+        </div>
+    </main>
+
+    <a href="login.html" id="flotant-btn" class="btn-flotante">Agendar cita</a>
+
+    <script src="components/navbar.js"></script>
+    <script src="js/reporte_ventas.js"></script>
+</body>
+
+</html>
