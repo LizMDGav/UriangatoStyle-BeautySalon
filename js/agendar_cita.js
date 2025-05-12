@@ -1,5 +1,7 @@
-document.addEventListener("DOMContentLoaded", async () => {
+import { generarTicketPDF } from "./generar_ticket.js";
 
+document.addEventListener("DOMContentLoaded", async () => {
+    
     //Si es un admin no dejar hacer nada
     try {
         const res = await fetch("/api/usuarios/sesion");
@@ -186,8 +188,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             const data = await response.json();
+            const idCita = data.id;
 
             if (data.success) {
+                const fechaBonita = formatearFechaSegura(fechaInput.value);
+                generarTicketPDF(
+                    idCita,
+                    servicioText,
+                    fechaBonita,
+                    hora.value,
+                    costo,
+                );
                 alert("Cita agendada correctamente.");
                 location.reload();
             } else {
@@ -212,3 +223,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 });
+
+function formatearFechaSegura(fechaStr) {
+    const [año, mes, dia] = fechaStr.split("-");
+    const meses = [
+        "enero", "febrero", "marzo", "abril", "mayo", "junio",
+        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+    ];
+    return `${dia} de ${meses[parseInt(mes, 10) - 1]} de ${año}`;
+}

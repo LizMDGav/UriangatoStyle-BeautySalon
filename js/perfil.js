@@ -81,6 +81,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <span class="time">${cita.hora.substring(0, 5)}</span>
                     <span class="service">${cita.servicio}</span>
                     <span class="price">$${parseFloat(cita.costo).toLocaleString()}</span>
+                    <button onclick="generarTicketPDF(
+                        '${cita.id}',
+                        '${cita.servicio}',
+                        '${fecha}',
+                        '${cita.hora.substring(0, 5)}',
+                        '${cita.costo}'
+                    )">Ticket</button>
                     <button class="cancelar-cita" data-id="${cita.id}">Cancelar</button>
                 `;
                 divFecha.appendChild(divCita);

@@ -4,6 +4,8 @@ import { fileURLToPath } from 'url';
 import multer from 'multer';
 import fs from 'fs';
 import cookieParser from 'cookie-parser';
+import { jsPDF } from "jspdf";
+
 import { agregarUsuario, validarUsuario, validarAdministrador } from '../DataBase/model/usuarioDAO.js';
 import { obtenerPerfilUsuario, actualizarPerfilUsuario } from '../DataBase/model/usuarioDAO.js';
 import { obtenerPerfilAdmin, actualizarPerfilAdmin } from '../DataBase/model/usuarioDAO.js';
