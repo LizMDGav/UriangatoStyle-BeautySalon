@@ -1,4 +1,17 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async () => {
+
+    // Verificar sesión de admin
+    try {
+        const sesionRes = await fetch("/api/usuarios/sesion");
+        const sesion = await sesionRes.json();
+        if (!sesion.loggedIn || sesion.tipo !== "admin") {
+            window.location.href = "/index.html";
+            return;
+        }
+    } catch (err) {
+        console.error("Error al verificar sesión:", err);
+        return;
+    }
     // Referencias a elementos del DOM
     const periodoRadios = document.querySelectorAll('input[name="periodo"]');
     const fechaContainer = document.getElementById('fecha-container');
